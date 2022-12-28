@@ -101,6 +101,8 @@ function pressOperator(e) {
 }
 
 function pressControl(e) {
+    console.log(e)
+    console.log(e.target)
     const control = e.target.getAttribute('data-key');
     switch (control) {
         case 'equals':

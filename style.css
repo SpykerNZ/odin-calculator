@@ -26,6 +26,14 @@ body {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+svg {
+    overflow: visible;
+}
+
+text{
+    pointer-events: none;
+}
+
 .calculator {
     display: flex;
     flex-direction: column;
@@ -68,7 +76,8 @@ body {
 
 .digit {
     background-color: black;
-    transition: box-shadow 0.1s ease, transform 0.1s ease;
+    border-radius: 2px;
+    transition: background-color 0.1s ease;
     color: white;
     height: 32px;
     border: none;
@@ -76,27 +85,19 @@ body {
 }
 
 .digit:active {
-    box-shadow: 1px 1px 0, inset 1px 1px 1px;
-    transform: translate(1px, 1px);
+    background-color: gray;
 }
-
-
 
 .control[data-key='dot'] {
     font-size: 30px;
-    border-radius: 20px;;
-    margin: 0;
-    padding: 0;
-    width: 40px;
-    height: 40px;
-    box-shadow: 0 3px 1px 0 #3275a8;
-    border: none;
-    transition: box-shadow 0.1s ease, transform 0.1s ease;
 }
 
-.control[data-key='dot']:active {
-    box-shadow: 0 0 0, inset 2px 2px 2px #3275a8;
-    transform: translate(0px, 3px);
+circle[data-key='dot'] {
+    transition: fill 0.1s ease;
+}
+
+circle[data-key='dot']:active {
+    fill: lightblue;
 }
 
 .lower {
@@ -154,55 +155,3 @@ body {
     display: flex;
     justify-content: center;
 }
-
-/*
-.control[data-key='equals'] {
-    background-color: #f20553;
-    color: white;
-    width: 100px;
-    height: 100px;
-    font-size: 60px;
-    border-radius: 50px;
-    box-shadow: 0 2px 1px 3px #f53373;
-    border: none;
-    transition: box-shadow 0.1s ease, transform 0.1s ease;
-}
-
-.control[data-key='equals']:active {
-    box-shadow: 0 0 0, inset 2px 2px 2px #f53373;
-    transform: translate(0px, 2px);
-}
-
-.control[data-key='back'] {
-    background-color: green;
-    box-shadow: 2px 2px 0 green;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    box-shadow: 0 3px 1px 0 lightgreen;
-    border: none;
-    transition: box-shadow 0.1s ease, transform 0.1s ease;
-}
-
-.control[data-key='back']:active {
-    box-shadow: 0 0 0, inset 0 2px 1px lightgreen;
-    transform: translate(0px, 3px);
-}
-
-.control[data-key='clear'] {
-    background-color: blue;
-    box-shadow: 2px 2px 0 blue;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    box-shadow: 0 3px 1px 0 lightblue;
-    border: none;
-    transition: box-shadow 0.1s ease, transform 0.1s ease;
-}
-
-.control[data-key='clear']:active {
-    box-shadow: 0 0 0, inset 0 2px 1px lightblue;
-    transform: translate(0px, 3px);
-}*/
