@@ -26,10 +26,6 @@ body {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-svg {
-    overflow: visible;
-}
-
 text{
     pointer-events: none;
 }
