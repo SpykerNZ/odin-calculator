@@ -133,9 +133,9 @@ const controls = document.querySelectorAll('.control');
 const display = document.querySelector('.display');
 
 // Add Event Listeners
-digits.forEach(digit => digit.addEventListener('mousedown', pressDigit));
-operators.forEach(operator => operator.addEventListener('mousedown', pressOperator));
-controls.forEach(control => control.addEventListener('mousedown', pressControl));
+digits.forEach(digit => digit.addEventListener('click', pressDigit));
+operators.forEach(operator => operator.addEventListener('click', pressOperator));
+controls.forEach(control => control.addEventListener('click', pressControl));
 
 // Constant values
 const maxLineDigits = 16;
