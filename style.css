@@ -24,9 +24,10 @@ body {
     align-items: center;
     background-color: #63bda4;
     border-radius: 22px;
+    margin: 50px;
+    padding: 40px;
     height: 600px;
     width: 450px;
-    padding: 40px;
 }
 
 button {
@@ -38,13 +39,13 @@ button:active {
     transform: translate(4px, 4px);
 }
 
-
 .display {
     background-color: #d9ffea;
-    height: 200px;
+    height: 250px;
     width: 100%;
+    box-sizing: border-box;
     margin: 0;
-    padding: 16px;
+    padding: 12px;
     border-radius: 20px;
     font-size: 66px;
     font-family: 'VT323', Fallback, sans-serif;
