@@ -1,0 +1,150 @@
+/* vt323-regular - latin */
+@font-face {
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/vt323-v17-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('../fonts/vt323-v17-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/vt323-v17-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/vt323-v17-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/vt323-v17-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/vt323-v17-latin-regular.svg#VT323') format('svg'); /* Legacy iOS */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    background-color: lightgreen;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #63bda4;
+    border-radius: 22px;
+    height: 600px;
+    width: 450px;
+    padding: 40px;
+}
+
+
+.display {
+    background-color: #d9ffea;
+    height: 200px;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    border-radius: 20px;
+    font-size: 66px;
+    font-family: 'VT323', Fallback, sans-serif;
+    text-align: right;
+    overflow-wrap: break-word;
+}
+
+.digits {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 60px;
+}
+
+.digits > .left {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: black;
+}
+
+.digit {
+    background-color: black;
+    color: white;
+    height: 32px;
+    width: 32px
+}
+
+.control[data-key='dot'] {
+    background-color: blue;
+    border-radius: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+.lower {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.operators {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.operator {
+    font-size: 50px;
+    font-weight: bolder;
+    width: 80px;
+    height: 80px;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.operator[data-key='plus'] {
+    color: #ffec47;
+}
+
+.operator[data-key='minus'] {
+    color: blue;
+}
+
+.operator[data-key='times'] {
+    color: blue;
+}
+
+.operator[data-key='divide'] {
+    color: #ffec47;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.top {
+    display: flex;
+    gap: 24px;
+}
+
+.bottom {
+    display: flex;
+    justify-content: center;
+}
+
+.control[data-key='equals'] {
+    background-color: #f20553;
+    color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+.control[data-key='back'] {
+    background-color: green;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.control[data-key='clear'] {
+    background-color: blue;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
