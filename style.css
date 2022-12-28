@@ -29,6 +29,15 @@ body {
     padding: 40px;
 }
 
+button {
+    transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+button:active {
+    box-shadow: 0 0 0, inset 2px 2px 2px;
+    transform: translate(4px, 4px);
+}
+
 
 .display {
     background-color: #d9ffea;
@@ -127,6 +136,7 @@ body {
 
 .control[data-key='equals'] {
     background-color: #f20553;
+    box-shadow: 2px 2px 0 #f20553;
     color: white;
     width: 80px;
     height: 80px;
@@ -135,6 +145,7 @@ body {
 
 .control[data-key='back'] {
     background-color: green;
+    box-shadow: 2px 2px 0 green;
     color: white;
     width: 40px;
     height: 40px;
@@ -143,6 +154,7 @@ body {
 
 .control[data-key='clear'] {
     background-color: blue;
+    box-shadow: 2px 2px 0 blue;
     color: white;
     width: 40px;
     height: 40px;
