@@ -101,8 +101,6 @@ function pressOperator(e) {
 }
 
 function pressControl(e) {
-    console.log(e)
-    console.log(e.target)
     const control = e.target.getAttribute('data-key');
     switch (control) {
         case 'equals':
@@ -116,6 +114,12 @@ function pressControl(e) {
             break;
         case 'dot':
             addDot();
+            break;
+        case 'power':
+            // TODO
+            break;
+        case 'reset':
+            // TODO
             break;
         default:
             console.error('Invalid Control');
@@ -135,9 +139,9 @@ const controls = document.querySelectorAll('.control');
 const display = document.querySelector('.display');
 
 // Add Event Listeners
-digits.forEach(digit => digit.addEventListener('click', pressDigit));
-operators.forEach(operator => operator.addEventListener('click', pressOperator));
-controls.forEach(control => control.addEventListener('click', pressControl));
+digits.forEach(digit => digit.addEventListener('mousedown', pressDigit));
+operators.forEach(operator => operator.addEventListener('mousedown', pressOperator));
+controls.forEach(control => control.addEventListener('mousedown', pressControl));
 
 // Constant values
 const maxLineDigits = 16;

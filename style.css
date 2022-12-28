@@ -88,7 +88,7 @@ text{
     font-size: 30px;
 }
 
-circle[data-key='dot'] {
+circle, path {
     transition: fill 0.1s ease;
 }
 
@@ -96,50 +96,41 @@ circle[data-key='dot']:active {
     fill: lightblue;
 }
 
+circle[data-key='equals']:active {
+    fill: lightcoral;
+}
+
+path[data-key='clear']:active {
+    fill: lightblue;
+}
+
+circle[data-key='back']:active {
+    fill: lightgreen;
+}
+
 .lower {
     display: flex;
     justify-content: space-around;
     width: 100%;
+    margin-top: 30px;
 }
 
-.operators {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+.lower > .left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.operator {
-    font-size: 50px;
-    font-weight: bolder;
-    width: 100px;
-    height: 100px;
-    background-color: transparent;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    text-shadow: 3px 3px green;
-}
-
-.operator[data-key='add'] {
-    color: #ffec47;
-}
-
-.operator[data-key='subtract'] {
-    color: blue;
-}
-
-.operator[data-key='multiply'] {
-    color: blue;
-}
-
-.operator[data-key='divide'] {
-    color: #ffec47;
-}
-
-.controls {
+.lower > .right {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 24px;
+}
+
+.lower > .left > .bottom {
+    display: flex;
+    gap: 16px;
 }
 
 .top {
@@ -150,4 +141,20 @@ circle[data-key='dot']:active {
 .bottom {
     display: flex;
     justify-content: center;
+}
+
+.control[data-key='power'],
+.control[data-key='reset'] {
+    border-radius: 2px;
+    background-color: black;
+    width: 60px;
+    height: 20px;
+    transition: background-color 0.1s ease;
+    color: white;
+    border: none;
+}
+
+.control[data-key='power']:active,
+.control[data-key='reset']:active {
+    background-color: gray;
 }
