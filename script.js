@@ -21,39 +21,39 @@ function operate(operator, a, b) {
 
 // Calculator Actions
 function backspaceDigit() {
-    currentValue = currentValue.slice(0, -1);
-    if (currentValue=='') currentValue='0';
+    displayString = displayString.slice(0, -1);
+    if (displayString=='') displayString='0';
 }
 
 function addDigit(value) {
-    if (currentValue.length>=maxLineDigits) return;
-    if (currentValue==='0') {
-        currentValue=value.toString();
+    if (displayString.length>=maxLineDigits) return;
+    if (displayString==='0') {
+        displayString=value.toString();
     } else
     {
-        currentValue=currentValue+value.toString();
+        displayString=displayString+value.toString();
     }
 }
 
 function addDot() {
-    if (currentValue==='0') currentValue='0.';
-    if (!currentValue.includes('.')) addDigit('.');
+    if (displayString==='0') displayString='0.';
+    if (!displayString.includes('.')) addDigit('.');
 }
 
-function cacheNumber(num) {
-    numbersArray.push(parseFloat(num));
+function cacheNumber(number) {
+    numbersArray.push(number);
 }
 
 function cacheOperator(opr) {
     operatorsArray.push(opr);
 }
 
-function setDigits(value) {
-    currentValue = value.toString(); 
+function setDigits(number) {
+    displayString = number.toString(); 
 }
 
 function calculate() {
-    cacheNumber(currentValue);
+    cacheNumber(parseFloat(displayString));
     const length = numbersArray.length;
     let total = numbersArray[0];
     for (let i=1; i<length; i++) {
@@ -61,13 +61,12 @@ function calculate() {
             total = operate(operatorsArray[i-1], total, numbersArray[i]);
         }
     }
-    cacheNumber(total);
     clearAll();
     setDigits(total);
 }
 
 function clearAll() {
-    currentValue = '0';
+    displayString = '0';
     numbersArray = [];
     operatorsArray = [];
 }
@@ -97,8 +96,8 @@ function pressOperator(e) {
         default:
             console.error('Invalid Operator');
     }
-    cacheNumber(currentValue);
-    currentValue = '0';
+    cacheNumber(parseFloat(displayString));
+    displayString = '0';
 }
 
 function pressControl(e) {
@@ -123,9 +122,8 @@ function pressControl(e) {
 }
 
 function updateDisplay() {
-    console.log(currentValue);
-    string_sliced = currentValue.slice(0,maxLineDigits);
-    display.innerHTML = string_sliced;
+    const stringSliced = displayString.slice(0,maxLineDigits);
+    display.innerHTML = stringSliced;
 }
 
 // Grab relevant elements from DOM
@@ -143,6 +141,6 @@ controls.forEach(control => control.addEventListener('mousedown', pressControl))
 const maxLineDigits = 16;
 
 // Global values
-let currentValue = '0';
+let displayString = '0';
 let numbersArray = [];
 let operatorsArray = [];
