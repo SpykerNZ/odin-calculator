@@ -30,15 +30,6 @@ body {
     width: 450px;
 }
 
-button {
-    transition: box-shadow 0.1s ease, transform 0.1s ease;
-}
-
-button:active {
-    box-shadow: 0 0 0, inset 2px 2px 2px;
-    transform: translate(4px, 4px);
-}
-
 .display {
     background-color: #d9ffea;
     height: 250px;
@@ -69,19 +60,36 @@ button:active {
 
 .digit {
     background-color: black;
+    transition: box-shadow 0.1s ease, transform 0.1s ease;
     color: white;
     height: 32px;
+    border: none;
     width: 32px
 }
 
+.digit:active {
+    box-shadow: 1px 1px 0, inset 1px 1px 1px;
+    transform: translate(1px, 1px);
+}
+
 .control[data-key='dot'] {
-    background-color: blue;
-    box-shadow: 2px 2px 0 blue;
+    background: blue;
     color: white;
-    border-radius: 20px;
     font-size: 30px;
+    border-radius: 20px;;
+    margin: 0;
+    padding: 0;
     width: 40px;
     height: 40px;
+    outline: 4px;
+    box-shadow: 0 3px 1px 0 #3275a8;
+    border: none;
+    transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.control[data-key='dot']:active {
+    box-shadow: 0 0 0, inset 2px 2px 2px #3275a8;
+    transform: translate(0px, 3px);
 }
 
 .lower {
