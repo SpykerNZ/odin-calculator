@@ -30,6 +30,14 @@ text{
     pointer-events: none;
 }
 
+img {  
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+ }
+
 .calculator {
     display: flex;
     flex-direction: column;
@@ -88,29 +96,9 @@ text{
     font-size: 30px;
 }
 
-circle, path {
-    transition: fill 0.1s ease;
-}
-
-circle[data-key='dot']:active {
-    fill: lightblue;
-}
-
-circle[data-key='equals']:active {
-    fill: lightcoral;
-}
-
-path[data-key='clear']:active {
-    fill: lightblue;
-}
-
-circle[data-key='back']:active {
-    fill: lightgreen;
-}
-
 .lower {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
     margin-top: 50px;
 }
@@ -134,9 +122,7 @@ circle[data-key='back']:active {
 }
 
 .lower > .right > .top {
-    margin-left: 20px;
     display: flex;
-    gap: 24px;
 }
 
 .lower > .right > .bottom {
@@ -159,3 +145,48 @@ circle[data-key='back']:active {
 .control[data-key='reset']:active {
     background-color: gray;
 }
+
+.direction {
+    padding: 0;
+    margin: 0;
+    width: 3em;
+    height: 3em;
+    position: absolute;
+    box-sizing: border-box;
+  }
+  
+  .dpad {
+    position: absolute;
+    height: 9em;
+    margin: auto;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 200px;
+    width: 3em;
+    height: 3em;
+  }
+  
+  .dpad > .center {
+    z-index: 2;
+    top: 3em;
+  }
+  
+  .dpad * {
+    display: flex;
+    background: yellow;
+  }
+  
+  .dpad > .right {
+    top: 3em;
+    left: 3em;
+  }
+  
+  .dpad > .left {
+    top: 3em;
+    right: 3em;
+  }
+  
+  .dpad > .down {
+    top: 6em;
+  }
