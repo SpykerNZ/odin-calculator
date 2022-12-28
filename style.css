@@ -49,7 +49,7 @@ body {
     justify-content: space-between;
     width: 100%;
     margin-top: 30px;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 .digits > .left {
@@ -104,25 +104,27 @@ body {
 }
 
 .operator {
-    font-size: 50px;
+    font-size: 100px;
     font-weight: bolder;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background-color: transparent;
     margin: 0;
     padding: 0;
     text-align: center;
+    border: none;
+    text-shadow: 3px 3px green;
 }
 
-.operator[data-key='plus'] {
+.operator[data-key='add'] {
     color: #ffec47;
 }
 
-.operator[data-key='minus'] {
+.operator[data-key='subtract'] {
     color: blue;
 }
 
-.operator[data-key='times'] {
+.operator[data-key='multiply'] {
     color: blue;
 }
 
@@ -133,6 +135,7 @@ body {
 .controls {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 24px;
 }
 
@@ -148,11 +151,20 @@ body {
 
 .control[data-key='equals'] {
     background-color: #f20553;
-    box-shadow: 2px 2px 0 #f20553;
     color: white;
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
+    width: 100px;
+    height: 100px;
+    border: none;
+    font-size: 60px;
+    border-radius: 50px;
+    box-shadow: 0 2px 1px 3px #f53373;
+    border: none;
+    transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.control[data-key='equals']:active {
+    box-shadow: 0 0 0, inset 2px 2px 2px #f53373;
+    transform: translate(0px, 2px);
 }
 
 .control[data-key='back'] {
@@ -162,6 +174,14 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 20px;
+    box-shadow: 0 3px 1px 0 lightgreen;
+    border: none;
+    transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.control[data-key='back']:active {
+    box-shadow: 0 0 0, inset 0 2px 1px lightgreen;
+    transform: translate(0px, 3px);
 }
 
 .control[data-key='clear'] {
@@ -171,4 +191,12 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 20px;
+    box-shadow: 0 3px 1px 0 lightblue;
+    border: none;
+    transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.control[data-key='clear']:active {
+    box-shadow: 0 0 0, inset 0 2px 1px lightblue;
+    transform: translate(0px, 3px);
 }
