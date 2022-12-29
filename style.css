@@ -16,6 +16,7 @@ body {
     display: flex;
     justify-content: center;
     background-color: lightgreen;
+
     /* prevent text from being selectable */
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -26,9 +27,14 @@ body {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-text{
-    pointer-events: none;
-}
+img {  
+    /* prevent image from being selectable */
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+ }
 
 .calculator {
     display: flex;
@@ -56,106 +62,134 @@ text{
     overflow-wrap: break-word;
 }
 
-.digits {
+.upper-row {
     display: flex;
     justify-content: space-between;
     width: 100%;
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 60px;
 }
 
-.digits > .left {
-    padding: 5px;
-    border-radius: 5px;
+.digits {
+    display: flex;
     background-color: black;
+}
+
+.one-to-five,
+.six-to-nine {
+    display: flex;
 }
 
 .digit {
     background-color: black;
-    border-radius: 2px;
-    transition: background-color 0.1s ease;
     color: white;
     height: 32px;
+    width: 32px;
+    margin: 0;
+    padding: 0;
+    border-radius: 2px;
     border: none;
-    width: 32px
+    transition: background-color 0.1s ease,
+                border 0.1s ease;
+}
+
+.digit:hover {
+    border: solid 2px gray;
 }
 
 .digit:active {
     background-color: gray;
 }
 
-.control[data-key='dot'] {
-    font-size: 30px;
-}
 
-circle, path {
-    transition: fill 0.1s ease;
-}
-
-circle[data-key='dot']:active {
-    fill: lightblue;
-}
-
-circle[data-key='equals']:active {
-    fill: lightcoral;
-}
-
-path[data-key='clear']:active {
-    fill: lightblue;
-}
-
-circle[data-key='back']:active {
-    fill: lightgreen;
-}
-
-.lower {
+.lower-row {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    margin-top: 50px;
 }
 
-.lower > .left {
+.lower-row > .left {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 40px;
 }
 
-.lower > .right {
+.lower-row > .left > .bottom {
     display: flex;
-    flex-direction: column;
+    gap: 10px;
+}
+
+.dpad {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.dpad-empty {
+    width: 50px;
+    height: 50px;
+}
+
+.dpad-filled {
+    background-color: yellow;
+    width: 50px;
+    height: 50px;
+}
+
+.lower-row > .right > .bottom {
+    display: flex;
     justify-content: center;
-    gap: 24px;
-}
-
-.lower > .left > .bottom {
-    display: flex;
     gap: 16px;
 }
 
-.lower > .right > .top {
-    margin-left: 20px;
+
+.lower-row > .right {
     display: flex;
-    gap: 24px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.lower > .right > .bottom {
+.lower-row > .right > .top {
     display: flex;
-    justify-content: center;
+    height: 100px;
+    gap: 16px;
 }
 
-.control[data-key='power'],
-.control[data-key='reset'] {
-    border-radius: 2px;
+.control[data-key='dot'] {
+    height: 32px;
+    border-radius: 16px;
+}
+
+.control[data-key='dot']:active {
+    filter: invert(46%) sepia(68%) saturate(4043%) hue-rotate(166deg) brightness(102%) contrast(101%);
+}
+
+.control[data-key='reset'],
+.control[data-key='power'] {
     background-color: black;
-    width: 60px;
-    height: 20px;
-    transition: background-color 0.1s ease;
     color: white;
+    height: 30px;
+    width: 60px;
     border: none;
 }
 
-.control[data-key='power']:active,
-.control[data-key='reset']:active {
-    background-color: gray;
+.control[data-key='clear']{
+    align-self: flex-start;
+    height: 60px;
+}
+
+.control[data-key='back']{
+    align-self: flex-end;
+    border-radius: 25px;
+}
+
+.control[data-key='equals']{
+    border-radius: 50px;
+}
+
+.control:active {
+    filter: brightness(130%) saturate(120%);
+}
+
+.operator:active {
+    filter: brightness(80%) saturate(120%);
 }

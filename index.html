@@ -11,104 +11,71 @@
 <body>
     <div class="calculator">
         <p class="display">0</p>
-        <div class="digits">
-            <div class="left">
-                <button data-key="1" class="digit">1</button>
-                <button data-key="2" class="digit">2</button>
-                <button data-key="3" class="digit">3</button>
-                <button data-key="4" class="digit">4</button>            
-                <button data-key="5" class="digit">5</button>
-                <button data-key="6" class="digit">6</button>
-                <button data-key="7" class="digit">7</button>
-                <button data-key="8" class="digit">8</button>
-                <button data-key="9" class="digit">9</button>
-                <button data-key="0" class="digit">0</button>
+        <div class="upper-row">
+            <div class="digits">
+                <div class="one-to-five">
+                    <button data-key="0" class="digit">0</button>
+                    <button data-key="1" class="digit">1</button>
+                    <button data-key="2" class="digit">2</button>
+                    <button data-key="3" class="digit">3</button>
+                    <button data-key="4" class="digit">4</button>            
+                </div>
+                <div class="six-to-nine">
+                    <button data-key="5" class="digit">5</button>
+                    <button data-key="6" class="digit">6</button>
+                    <button data-key="7" class="digit">7</button>
+                    <button data-key="8" class="digit">8</button>
+                    <button data-key="9" class="digit">9</button>
+                </div>
             </div>
-            <div class="right">
-                <svg width="40" height="40">
-                    <circle data-key="dot" class="control"
-                        cx="20"
-                        cy="20"
-                        r="20"
-                        fill="#0000FF"/>
-                    <text 
-                            x="20"
-                            y="20"
-                            fill="#FFFFFF"
-                            text-anchor="middle"
-                            alignment-baseline="middle">
-                        &#183;
-                    </text>
-                </svg>
-            </div>
+            <img src="../images/dot-btn.svg" 
+                         data-key="dot" 
+                         class="control"></img>
         </div>
-        <div class="lower">
+        <div class="lower-row">
             <div class="left">
                 <div class="top">
                     <div class="dpad">
-                        <svg width="100" height="100">
-                            <a href="#" data-key="add" class="operator">
-                            <path data-key="add"
-                                    d="M 37.5 50 L 37.5 0 L 62.5 0 L 62.5 37.5 L 100 37.5 L 100 62.5 L 62.5 62.5 L 62.5 100 L 37.5 100 L 37.5 62.5 L 0 62.5 L 0 37.5 L 37.5 37.5
-                                    Z"
-                                    fill="#ffec47"/>
-                            </a>
-                        </svg>
-                    </div>
+                        <div class="dpad-empty"></div>
+                        <img src="../images/plus-btn.svg" 
+                             data-key="add"
+                             class="operator"></img>
+                        <div class="dpad-empty"></div>
+                        <img src="../images/divide-btn.svg" 
+                             data-key="divide"
+                             class="operator"></img>
+                        <div class="dpad-filled"></div>
+                        <img src="../images/minus-btn.svg" 
+                             data-key="subtract"
+                             class="operator"></img>
+                        <div class="dpad-empty"></div>
+                        <img src="../images/times-btn.svg" 
+                             data-key="multiply"
+                             class="operator"></img>
+
+                        <div class="dpad-empty"></div>
+                    </div> 
                 </div>
                 <div class="bottom">
-                    <button data-key="reset" class="control"></button>
-                    <button data-key="power" class="control"></button>
+                    <button data-key="reset" class="control">POWER</button>
+                    <button data-key="power" class="control">RESET</button>
                 </div>
             </div>
             <div class="right">
                 <div class="top">
-                    <svg width="60" height="60">
-                        <path data-key="clear" class="control"
-                            d="M 0 60 L 30 0 M 30 0 L 60 60 L 0 60"
-                            fill="#0000FF"/>
-                        <text
-                            x="30"
-                            y="40"
-                            fill="#FFFFFF"
-                            text-anchor="middle"
-                            alignment-baseline="middle">
-                            AC
-                        </text>
-                    </svg>
-                    <svg width="60" height="80">
-                        <circle data-key="back" class="control"
-                            cx="30"
-                            cy="50"
-                            r="30"
-                            fill="#00FF00"/>
-                        <text 
-                            x="30"
-                            y="50"
-                            fill="#FFFFFF"
-                            text-anchor="middle"
-                            alignment-baseline="middle">
-                            Delete
-                        </text>
-                    </svg>
+                    <img src="../images/clear-btn.svg" 
+                         data-key="clear" 
+                         class="control"></img>
+                    <img src="../images/backspace-btn.svg"
+                         data-key="back" 
+                         class="control"></img>
                 </div>
                 <div class="bottom">
-                    <svg width="100" height="100">
-                        <circle data-key="equals" class="control"
-                            cx="50"
-                            cy="50"
-                            r="50"
-                            fill="#f20553"/>
-                        <text
-                            x="50"
-                            y="60"
-                            fill="#FFFFFF"
-                            text-anchor="middle"
-                            alignment-baseline="middle"
-                            font-size="100px">
-                            =
-                        </text>
-                    </svg>
+                    <img src="../images/equals-btn.svg"
+                         width="100px"
+                         height="100px"
+                         data-key="equals" 
+                         class="control"></img>
                 </div>
             </div>
         </div>
