@@ -40,11 +40,11 @@ function addDot() {
     if (!displayString.includes('.')) addDigit('.');
 }
 
-function cacheNumber(number) {
+function storeNumber(number) {
     numbersArray.push(number);
 }
 
-function cacheOperator(opr) {
+function storeOperator(opr) {
     operatorsArray.push(opr);
 }
 
@@ -53,7 +53,7 @@ function setDigits(number) {
 }
 
 function calculate() {
-    cacheNumber(parseFloat(displayString));
+    storeNumber(parseFloat(displayString));
     const length = numbersArray.length;
     let total = numbersArray[0];
     for (let i=1; i<length; i++) {
@@ -72,37 +72,31 @@ function clearAll() {
 }
 
 // Display interation functions
-function pressDigit(e) {
-    const digit = e.target.getAttribute('data-key');
-    addDigit(digit);
-    updateDisplay();
-}
+function pressButton(e) {
+    const btn = e.target.getAttribute('data-key');
+    console.log(e.target);
 
-function pressOperator(e) {
-    const operator = e.target.getAttribute('data-key');
-    switch (operator) {
+    // Check for power button first
+    if (btn==='power') powerOn();
+    if (powerOn===false) return;
+
+    // Run function depending on button pressed
+    switch (btn) {
         case 'add':
-            cacheOperator(add);
+            pressOperator(add);
             break;
         case 'subtract':
-            cacheOperator(subtract);
+            pressOperator(subtract);
             break;
         case 'multiply':
-            cacheOperator(multiply);
+            pressOperator(multiply);
             break;
         case 'divide':
-            cacheOperator(divide);
+            pressOperator(divide);
             break;
-        default:
-            console.error('Invalid Operator');
-    }
-    cacheNumber(parseFloat(displayString));
-    displayString = '0';
-}
-
-function pressControl(e) {
-    const control = e.target.getAttribute('data-key');
-    switch (control) {
+        case 'digit':
+            addDigit(e.target.innerHTML);
+            break;
         case 'equals':
             calculate();
             break;
@@ -115,30 +109,34 @@ function pressControl(e) {
         case 'dot':
             addDot();
             break;
-        case 'power':
-            powerOn();
-            break;
         case 'sleep':
             powerOff();
             break;
+        case 'power':
+            break;
         default:
-            console.error('Invalid Control');
+            console.error('Invalid Button');
     }
     updateDisplay();
 }
 
+function pressOperator(opr) {
+    storeOperator(opr);
+    storeNumber(parseFloat(displayString));
+    displayString = '0';
+}
+
 function powerOff() {
     poweredOn = false;
-    clearAll();
     output.style.display = 'none';
     display.style.backgroundImage = "url(./images/face-sleep.gif)"
 }
 
 function powerOn() {
     poweredOn = true;
-    clearAll();
     output.style.display = 'block';
     display.style.backgroundImage = "url(./images/face-smile.png)"
+    clearAll();
 }
 
 function updateDisplay() {
@@ -147,16 +145,12 @@ function updateDisplay() {
 }
 
 // Grab relevant elements from DOM
-const digits = document.querySelectorAll('.digit');
-const operators = document.querySelectorAll('.operator');
-const controls = document.querySelectorAll('.control');
+const buttons = document.querySelectorAll('.button');
 const output = document.querySelector('.output');
 const display = document.querySelector('.display');
 
 // Add Event Listeners
-digits.forEach(digit => digit.addEventListener('mousedown', pressDigit));
-operators.forEach(operator => operator.addEventListener('mousedown', pressOperator));
-controls.forEach(control => control.addEventListener('mousedown', pressControl));
+buttons.forEach(digit => digit.addEventListener('mousedown', pressButton));
 
 // Constant values
 const maxLineDigits = 14;
