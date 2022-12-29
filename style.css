@@ -82,6 +82,8 @@ img {
 }
 
 .digit {
+    font-family: 'VT323', Fallback, sans-serif;
+    font-size: 24px;
     background-color: black;
     color: white;
     height: 32px;
@@ -164,8 +166,10 @@ img {
     filter: invert(46%) sepia(68%) saturate(4043%) hue-rotate(166deg) brightness(102%) contrast(101%);
 }
 
-.control[data-key='reset'],
-.control[data-key='power'] {
+.control[data-key='power'],
+.control[data-key='sleep'] {
+    font-family: 'VT323', Fallback, sans-serif;
+    font-size: 16px;
     background-color: black;
     color: white;
     height: 30px;
