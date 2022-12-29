@@ -116,15 +116,29 @@ function pressControl(e) {
             addDot();
             break;
         case 'power':
-            // TODO
+            powerOn();
             break;
-        case 'reset':
-            // TODO
+        case 'sleep':
+            powerOff();
             break;
         default:
             console.error('Invalid Control');
     }
     updateDisplay();
+}
+
+function powerOff() {
+    poweredOn = false;
+    clearAll();
+    output.style.display = 'none';
+    display.style.backgroundImage = "url(./images/face-sleep.gif)"
+}
+
+function powerOn() {
+    poweredOn = true;
+    clearAll();
+    output.style.display = 'block';
+    display.style.backgroundImage = "url(./images/face-smile.png)"
 }
 
 function updateDisplay() {
@@ -137,6 +151,7 @@ const digits = document.querySelectorAll('.digit');
 const operators = document.querySelectorAll('.operator');
 const controls = document.querySelectorAll('.control');
 const output = document.querySelector('.output');
+const display = document.querySelector('.display');
 
 // Add Event Listeners
 digits.forEach(digit => digit.addEventListener('mousedown', pressDigit));
@@ -147,6 +162,10 @@ controls.forEach(control => control.addEventListener('mousedown', pressControl))
 const maxLineDigits = 14;
 
 // Global values
+let poweredOn = false;
 let displayString = '0';
 let numbersArray = [];
 let operatorsArray = [];
+
+// Power off by default
+powerOff();

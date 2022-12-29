@@ -49,7 +49,7 @@ img {
 
 .display {
     display: flex;
-    background-color: #d9ffea;
+    background-color: #c8e3c2;
     height: 250px;
     width: 100%;
     justify-content: right;
@@ -58,6 +58,9 @@ img {
     margin: 0;
     padding: 12px;
     border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    background-position-y: 20px;
 }
 
 .output {
