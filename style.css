@@ -72,12 +72,13 @@ img {
 
 .digits {
     display: flex;
-    background-color: black;
+    flex-wrap: wrap;
 }
 
 .one-to-five,
 .six-to-zero {
     display: flex;
+    background-color: black;
 }
 
 .digit {
