@@ -3,13 +3,13 @@
     font-family: 'VT323';
     font-style: normal;
     font-weight: 400;
-    src: url('/fonts/vt323-v17-latin-regular.eot'); /* IE9 Compat Modes */
+    src: url('./fonts/vt323-v17-latin-regular.eot'); /* IE9 Compat Modes */
     src: local(''),
-         url('/fonts/vt323-v17-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('/fonts/vt323-v17-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-         url('/fonts/vt323-v17-latin-regular.woff') format('woff'), /* Modern Browsers */
-         url('/fonts/vt323-v17-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-         url('/fonts/vt323-v17-latin-regular.svg#VT323') format('svg'); /* Legacy iOS */
+         url('./fonts/vt323-v17-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./fonts/vt323-v17-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('./fonts/vt323-v17-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('./fonts/vt323-v17-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./fonts/vt323-v17-latin-regular.svg#VT323') format('svg'); /* Legacy iOS */
 }
 
 body {
@@ -39,7 +39,6 @@ img {
 .calculator {
     display: flex;
     flex-direction: column;
-    align-items: center;
     background-color: #63bda4;
     border-radius: 22px;
     margin: 50px;
@@ -49,17 +48,23 @@ img {
 }
 
 .display {
+    display: flex;
     background-color: #d9ffea;
     height: 250px;
     width: 100%;
+    justify-content: right;
+    align-items: flex-start;
     box-sizing: border-box;
     margin: 0;
     padding: 12px;
     border-radius: 20px;
+}
+
+.output {
+    margin: 0;
+    padding: 0;
     font-size: 66px;
     font-family: 'VT323', Fallback, sans-serif;
-    text-align: right;
-    overflow-wrap: break-word;
 }
 
 .upper-row {
@@ -72,15 +77,18 @@ img {
 
 .digits {
     display: flex;
-    background-color: black;
+    flex-wrap: wrap;
 }
 
 .one-to-five,
-.six-to-nine {
+.six-to-zero {
     display: flex;
+    background-color: black;
 }
 
 .digit {
+    font-family: 'VT323', Fallback, sans-serif;
+    font-size: 24px;
     background-color: black;
     color: white;
     height: 32px;
@@ -106,6 +114,7 @@ img {
     display: flex;
     justify-content: space-around;
     width: 100%;
+    gap: 16px;
 }
 
 .lower-row > .left {
@@ -163,8 +172,10 @@ img {
     filter: invert(46%) sepia(68%) saturate(4043%) hue-rotate(166deg) brightness(102%) contrast(101%);
 }
 
-.control[data-key='reset'],
-.control[data-key='power'] {
+.control[data-key='power'],
+.control[data-key='sleep'] {
+    font-family: 'VT323', Fallback, sans-serif;
+    font-size: 16px;
     background-color: black;
     color: white;
     height: 30px;

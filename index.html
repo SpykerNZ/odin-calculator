@@ -10,25 +10,28 @@
 </head>
 <body>
     <div class="calculator">
-        <p class="display">0</p>
+        <div class="display">
+            <div class="output">0</div>
+        </div>
         <div class="upper-row">
             <div class="digits">
                 <div class="one-to-five">
-                    <button data-key="0" class="digit">0</button>
                     <button data-key="1" class="digit">1</button>
                     <button data-key="2" class="digit">2</button>
                     <button data-key="3" class="digit">3</button>
-                    <button data-key="4" class="digit">4</button>            
+                    <button data-key="4" class="digit">4</button>
+                    <button data-key="5" class="digit">5</button>        
                 </div>
-                <div class="six-to-nine">
-                    <button data-key="5" class="digit">5</button>
+                <div class="six-to-zero">
+                    
                     <button data-key="6" class="digit">6</button>
                     <button data-key="7" class="digit">7</button>
                     <button data-key="8" class="digit">8</button>
                     <button data-key="9" class="digit">9</button>
+                    <button data-key="0" class="digit">0</button>
                 </div>
             </div>
-            <img src="../images/dot-btn.svg" 
+            <img src="./images/dot-btn.svg" 
                          data-key="dot" 
                          class="control"></img>
         </div>
@@ -37,19 +40,19 @@
                 <div class="top">
                     <div class="dpad">
                         <div class="dpad-empty"></div>
-                        <img src="../images/plus-btn.svg" 
+                        <img src="./images/plus-btn.svg" 
                              data-key="add"
                              class="operator"></img>
                         <div class="dpad-empty"></div>
-                        <img src="../images/divide-btn.svg" 
+                        <img src="./images/divide-btn.svg" 
                              data-key="divide"
                              class="operator"></img>
                         <div class="dpad-filled"></div>
-                        <img src="../images/minus-btn.svg" 
+                        <img src="./images/minus-btn.svg" 
                              data-key="subtract"
                              class="operator"></img>
                         <div class="dpad-empty"></div>
-                        <img src="../images/times-btn.svg" 
+                        <img src="./images/times-btn.svg" 
                              data-key="multiply"
                              class="operator"></img>
 
@@ -57,21 +60,21 @@
                     </div> 
                 </div>
                 <div class="bottom">
-                    <button data-key="reset" class="control">POWER</button>
-                    <button data-key="power" class="control">RESET</button>
+                    <button data-key="power" class="control">POWER</button>
+                    <button data-key="sleep" class="control">SLEEP</button>
                 </div>
             </div>
             <div class="right">
                 <div class="top">
-                    <img src="../images/clear-btn.svg" 
+                    <img src="./images/clear-btn.svg" 
                          data-key="clear" 
                          class="control"></img>
-                    <img src="../images/backspace-btn.svg"
+                    <img src="./images/backspace-btn.svg"
                          data-key="back" 
                          class="control"></img>
                 </div>
                 <div class="bottom">
-                    <img src="../images/equals-btn.svg"
+                    <img src="./images/equals-btn.svg"
                          width="100px"
                          height="100px"
                          data-key="equals" 

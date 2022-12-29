@@ -129,14 +129,14 @@ function pressControl(e) {
 
 function updateDisplay() {
     const stringSliced = displayString.slice(0,maxLineDigits);
-    display.innerHTML = stringSliced;
+    output.innerHTML = stringSliced;
 }
 
 // Grab relevant elements from DOM
 const digits = document.querySelectorAll('.digit');
 const operators = document.querySelectorAll('.operator');
 const controls = document.querySelectorAll('.control');
-const display = document.querySelector('.display');
+const output = document.querySelector('.output');
 
 // Add Event Listeners
 digits.forEach(digit => digit.addEventListener('mousedown', pressDigit));
@@ -144,7 +144,7 @@ operators.forEach(operator => operator.addEventListener('mousedown', pressOperat
 controls.forEach(control => control.addEventListener('mousedown', pressControl));
 
 // Constant values
-const maxLineDigits = 16;
+const maxLineDigits = 14;
 
 // Global values
 let displayString = '0';
