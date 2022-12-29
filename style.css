@@ -39,7 +39,6 @@ img {
 .calculator {
     display: flex;
     flex-direction: column;
-    align-items: center;
     background-color: #63bda4;
     border-radius: 22px;
     margin: 50px;
@@ -49,17 +48,23 @@ img {
 }
 
 .display {
+    display: flex;
     background-color: #d9ffea;
     height: 250px;
     width: 100%;
+    justify-content: right;
+    align-items: flex-start;
     box-sizing: border-box;
     margin: 0;
     padding: 12px;
     border-radius: 20px;
+}
+
+.output {
+    margin: 0;
+    padding: 0;
     font-size: 66px;
     font-family: 'VT323', Fallback, sans-serif;
-    text-align: right;
-    overflow-wrap: break-word;
 }
 
 .upper-row {
