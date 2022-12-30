@@ -91,7 +91,7 @@ function pressButton(e) {
     if (poweredOn===false) return;
 
     // Change display when interacted with
-    setDislayImageInteraction();
+    setSmileTemporary(timeMs=smileTimeMs);
 
     // Run function depending on button pressed
     switch (btn) {
@@ -112,9 +112,7 @@ function pressButton(e) {
             break;
         case 'equals':
             if (executeEquals()) {
-                setDisplayImageTemporary(
-                    newUrl=imageUrls.happy, 
-                    timeMs=1000);
+                setHappyTemporary(timeMs=happyTimeMs);
             };
             break;
         case 'back':
@@ -138,46 +136,60 @@ function pressButton(e) {
     updateOutput();
 }
 
-function setDislayImageInteraction() {
-    // Set to smile when interacting
+
+// Expression Functions
+function setBgDisplay(imageUrl) {
+    baseImageUrl = imageUrl;
+    displayElem.style.backgroundImage = baseImageUrl;
+}
+
+function setSmileTemporary(timeMs) {
     displayElem.style.backgroundImage = imageUrls.smile;
 
     if (smileTimeout!=null) {
         clearTimeout(smileTimeout);
     }
     smileTimeout = setTimeout(function() {
-        displayElem.style.backgroundImage = defaultImageUrl;
+        displayElem.style.backgroundImage = baseImageUrl;
     smileTimeout = null;
-    }, 5000);
-}
-
-function setDisplayImageTemporary(newUrl, timeMs) {
-    displayElem.style.backgroundImage = newUrl;
-    setTimeout(function() {
-        if (smileTimeout!=null && poweredOn) {
-            displayElem.style.backgroundImage = imageUrls.smile;
-        }
-        else
-        {
-            displayElem.style.backgroundImage = defaultImageUrl;
-        }
     }, timeMs);
 }
 
+function setHappyTemporary(timeMs) {
+    displayElem.style.backgroundImage = imageUrls.happy;
+
+    if (happyTimeout!=null) {
+        clearTimeout(happyTimeout);
+    }
+    happyTimeout = setTimeout(function() {
+        if (poweredOn) {
+            displayElem.style.backgroundImage = imageUrls.smile;
+        } else {
+            displayElem.style.backgroundImage = imageUrls.sleep;
+        }
+        
+        happyTimeout = null;
+    }, timeMs);
+}
+
+function setWorriedTemporary(timeMs) {
+    displayElem.style.backgroundImage = imageUrls.happy;
+}
+
+// Power Functions
 function powerOff() {
     poweredOn = false;
     equationElem.style.display = 'none';
     outputElem.style.display = 'none';
-    defaultImageUrl = imageUrls.sleep;
-    displayElem.style.backgroundImage = defaultImageUrl;
+    setBgDisplay(imageUrls.sleep);
+    resetAll();
 }
 
 function powerOn() {
     poweredOn = true;
     equationElem.style.display = 'block';
     outputElem.style.display = 'block';
-    defaultImageUrl = imageUrls.straight;
-    displayElem.style.backgroundImage = defaultImageUrl;
+    setBgDisplay(imageUrls.straight);
     resetAll();
 }
 
@@ -226,6 +238,8 @@ const imageUrls = {
 }
 
 const maxLineDigits = 14;
+const smileTimeMs = 5000;
+const happyTimeMs = 1000;
 
 // Global variables
 let poweredOn = false;
@@ -238,8 +252,9 @@ let operatorFunction = null;
 
 let equationComplete = false;
 
-let defaultImageUrl = imageUrls.sleep;
+let baseImageUrl = imageUrls.sleep;
 let smileTimeout = null;
+let happyTimeout = null;
 
 // Power off by default, which updates initial display
 preloadImages();
