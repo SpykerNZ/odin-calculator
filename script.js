@@ -20,69 +20,53 @@ function operate(func, a, b) {
 }
 
 // Digit Actions
-
-function resetDigit() {
-    currentValue='0';
-    resetCurrentValue=false;
-}
-
 function backspaceDigit() {
-    if (resetCurrentValue) resetDigit();
-    currentValue = currentValue.slice(0, -1);
-    if (currentValue=='') currentValue='0';
+    currentValue = currentValue.slice(0, -1)
 }
 
 function addDigit(value) {
-    if (resetCurrentValue) resetDigit();
     if (currentValue.length>=maxLineDigits) return;
-    if (currentValue==='0') {
-        currentValue=value.toString();
-    } else
-    {
-        currentValue=currentValue+value.toString();
-    }
+    currentValue=currentValue+value.toString();
 }
 
 function addDot() {
-    if (resetCurrentValue) resetDigit();
-    if (currentValue==='0') currentValue='0.';
+    if (currentValue==='') currentValue='0';
     if (!currentValue.includes('.')) addDigit('.');
-}
-
-function setDigits(number) {
-    currentValue = number.toString(); 
 }
 
 // Calculator Actions
 
 function calculate() {
-    if (operatorFunction==null) return;
+    if (operatorFunction==null || 
+        rightOperand!=null ||
+        currentValue==='') return;
     rightOperand = parseFloat(currentValue);
     result = operate(operatorFunction, leftOperand, rightOperand);
     currentValue = result.toString();
-    resetCurrentValue = true;
-    resetOperation = true;
 }
 
 function clearAll() {
-    currentValue = '0';
+    currentValue = '';
     leftOperand = null;
     operatorFunction = null;
     rightOperand = null;
 }
 
 function pressOperator(opr) {
-    calculate(); // calculate if possible
-    rightOperand = null;
-    leftOperand = parseFloat(currentValue);
-    operatorFunction = opr;
-    resetCurrentValue = true;
+    if (currentValue==='') {
+        operatorFunction = opr;
+    } else {
+        calculate(); // calculate if possible
+        rightOperand = null;
+        leftOperand = parseFloat(currentValue);
+        operatorFunction = opr;
+        currentValue = '';
+    };
 }
 
 // Display interation functions
 function pressButton(e) {
     const btn = e.target.getAttribute('data-key');
-    console.log(e.target);
 
     // Check for power button first
     if (btn==='power') powerOn();
@@ -174,9 +158,7 @@ const maxLineDigits = 14;
 // Global values
 let poweredOn = false;
 
-let currentValue = '0';
-let resetCurrentValue = false;
-let resetOperation = false;
+let currentValue = '';
 
 let leftOperand = null;
 let rightOperand = null;
