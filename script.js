@@ -94,7 +94,7 @@ function pressButton(e) {
     if (poweredOn===false) return;
 
     // Change display when interacted with
-    setSmileTemporary(timeMs=smileTimeMs);
+    setSmileTemporary();
 
     // Run function depending on button pressed
     switch (btn) {
@@ -115,7 +115,7 @@ function pressButton(e) {
             break;
         case 'equals':
             if (executeEquals()) {
-                setHappyTemporary(timeMs=happyTimeMs);
+                setHappyTemporary();
             };
             break;
         case 'back':
@@ -151,7 +151,7 @@ function setBgDisplay(imageUrl) {
     displayElem.style.backgroundImage = baseImageUrl;
 }
 
-function setSmileTemporary(timeMs) {
+function setSmileTemporary() {
     displayElem.style.backgroundImage = imageUrls.smile;
 
     if (smileTimeout!=null) clearTimeout(smileTimeout);
@@ -159,13 +159,14 @@ function setSmileTemporary(timeMs) {
     smileTimeout = setTimeout(function() {
         displayElem.style.backgroundImage = baseImageUrl;
         smileTimeout = null;
-    }, timeMs);
+    }, smileTimeMs);
 }
 
-function setHappyTemporary(timeMs) {
+function setHappyTemporary() {
     displayElem.style.backgroundImage = imageUrls.happy;
 
     if (happyTimeout!=null) clearTimeout(happyTimeout);
+
     happyTimeout = setTimeout(function() {
         if (poweredOn) {
             displayElem.style.backgroundImage = imageUrls.smile;
@@ -173,7 +174,7 @@ function setHappyTemporary(timeMs) {
             displayElem.style.backgroundImage = imageUrls.sleep;
         }
         happyTimeout = null;
-    }, timeMs);
+    }, happyTimeMs);
 }
 
 function setWorriedOverride() {
