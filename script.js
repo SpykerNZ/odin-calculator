@@ -149,7 +149,7 @@ function setDislayImageInteraction() {
     smileTimeout = setTimeout(function() {
         displayElem.style.backgroundImage = defaultImageUrl;
     smileTimeout = null;
-    }, 2000);
+    }, 5000);
 }
 
 function setDisplayImageTemporary(newUrl, timeMs) {
