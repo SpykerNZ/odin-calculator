@@ -37,6 +37,7 @@ function addDot() {
     if (!currentValue.includes('.')) addDigit('.');
 }
 
+// Calculator actions
 function resetAll() {
     currentValue = '';
     leftOperandValue = null;
@@ -45,17 +46,17 @@ function resetAll() {
     resetFlag = false;
 }
 
-function calculate() {
-    rightOperandValue = parseFloat(currentValue);
-    result = operate(operatorFunction, leftOperandValue, rightOperandValue);
-    currentValue = result.toString();
+function equationReady() {
+    return (typeof operatorFunction === 'function' && 
+            rightOperandValue===null &&
+            currentValue!=='');
 }
 
 function executeEquals() {
-    if (operatorFunction!=null && 
-        rightOperandValue==null &&
-        currentValue!='') {  
-        calculate();
+    if (equationReady()) {
+        rightOperandValue = parseFloat(currentValue);
+        result = operate(operatorFunction, leftOperandValue, rightOperandValue);
+        currentValue = result.toString();
         resetFlag = true;
     }
 }
@@ -65,11 +66,7 @@ function executeOperator(opr) {
         // Allow operatorFunction to change if left operand is already assigned
         if (leftOperandValue!=null) operatorFunction = opr;
     } else {
-        if (operatorFunction!=null && 
-            rightOperandValue==null &&
-            currentValue!='') {  
-            calculate();
-        };
+        executeEquals();
         rightOperandValue = null;
         leftOperandValue = parseFloat(currentValue);
         operatorFunction = opr;
