@@ -114,7 +114,7 @@ function pressButton(e) {
         case 'equals':
             executeEquals();
             setDisplayImageTemporary(
-                newUrl=happyImageUrl, 
+                newUrl=imageUrls.happy, 
                 timeMs=1000);
             break;
         case 'back':
@@ -140,7 +140,7 @@ function pressButton(e) {
 
 function setDislayImageInteraction() {
     // Set to smile when interacting
-    displayElem.style.backgroundImage = smileImageUrl;
+    displayElem.style.backgroundImage = imageUrls.smile;
 
     if (smileTimeout!=null) {
         clearTimeout(smileTimeout);
@@ -155,7 +155,7 @@ function setDisplayImageTemporary(newUrl, timeMs) {
     displayElem.style.backgroundImage = newUrl;
     setTimeout(function() {
         if (smileTimeout!=null && poweredOn) {
-            displayElem.style.backgroundImage = smileImageUrl;
+            displayElem.style.backgroundImage = imageUrls.smile;
         }
         else
         {
@@ -168,7 +168,7 @@ function powerOff() {
     poweredOn = false;
     equationElem.style.display = 'none';
     outputElem.style.display = 'none';
-    defaultImageUrl = sleepImageUrl;
+    defaultImageUrl = imageUrls.sleep;
     displayElem.style.backgroundImage = defaultImageUrl;
 }
 
@@ -176,7 +176,7 @@ function powerOn() {
     poweredOn = true;
     equationElem.style.display = 'block';
     outputElem.style.display = 'block';
-    defaultImageUrl = straightImageUrl;
+    defaultImageUrl = imageUrls.straight;
     displayElem.style.backgroundImage = defaultImageUrl;
     resetAll();
 }
@@ -198,6 +198,15 @@ function updateOutput() {
     outputElem.innerHTML = stringSliced;
 }
 
+function preloadImages() {
+    for (let key in imageUrls) {
+        img = new Image();
+        img.src = imageUrls[key].substring(
+            imageUrls[key].indexOf('(')+1,
+            imageUrls[key].indexOf(")"));
+    }
+}
+
 // Grab relevant elements from DOM
 const buttonsElem = document.querySelectorAll('.button');
 const outputElem = document.querySelector('.output');
@@ -207,19 +216,18 @@ const displayElem = document.querySelector('.display');
 // Add Event Listeners
 buttonsElem.forEach(digit => digit.addEventListener('mousedown', pressButton));
 
-// Constant values
-const sleepImageUrl = "url(./images/face-sleep.gif)";
-const smileImageUrl = "url(./images/face-smile.png)";
-const happyImageUrl = "url(./images/face-happy.png)";
-const straightImageUrl = "url(./images/face-straight.png)";
-const worriedImageUrl = "url(./images/face-worried.png)";
-
-let defaultImageUrl = sleepImageUrl;
-let smileTimeout = null;
+// Constant variables
+const imageUrls = {
+    sleep: "url(./images/face-sleep.gif)",
+    smile: "url(./images/face-smile.png)",
+    happy: "url(./images/face-happy.png)",
+    straight: "url(./images/face-straight.png)",
+    worried: "url(./images/face-worried.png)"
+}
 
 const maxLineDigits = 14;
 
-// Global values
+// Global variables
 let poweredOn = false;
 
 let currentValue = '';
@@ -230,5 +238,9 @@ let operatorFunction = null;
 
 let resetFlag = false;
 
+let defaultImageUrl = imageUrls.sleep;
+let smileTimeout = null;
+
 // Power off by default, which updates initial display
+preloadImages();
 powerOff();
