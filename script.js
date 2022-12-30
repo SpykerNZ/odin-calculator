@@ -21,61 +21,63 @@ function operate(func, a, b) {
 
 // Digit Actions
 function backspaceDigit() {
-    if (resetFlag) resetAll();
+    if (equationComplete) resetAll();
     currentValue = currentValue.slice(0, -1)
 }
 
 function addDigit(value) {
-    if (resetFlag) resetAll();
+    if (equationComplete) resetAll();
     if (currentValue.length>=maxLineDigits) return;
     currentValue=currentValue+value.toString();
 }
 
 function addDot() {
-    if (resetFlag) resetAll();
+    if (equationComplete) resetAll();
     if (currentValue==='') currentValue='0';
     if (!currentValue.includes('.')) addDigit('.');
 }
 
+// Calculator actions
 function resetAll() {
     currentValue = '';
     leftOperandValue = null;
     operatorFunction = null;
     rightOperandValue = null;
-    resetFlag = false;
-}
-
-function calculate() {
-    rightOperandValue = parseFloat(currentValue);
-    result = operate(operatorFunction, leftOperandValue, rightOperandValue);
-    currentValue = result.toString();
+    equationComplete = false;
 }
 
 function executeEquals() {
-    if (operatorFunction!=null && 
+    if (typeof operatorFunction === 'function' && 
         rightOperandValue==null &&
-        currentValue!='') {  
-        calculate();
-        resetFlag = true;
+        currentValue!=='') {
+        rightOperandValue = parseFloat(currentValue);
+        result = operate(operatorFunction, leftOperandValue, rightOperandValue);
+        currentValue = result.toString();
+        equationComplete = true;
+        if (!isFinite(result)) {
+            currentValue=divideByZeroErrorString;
+        }
     }
+    return equationComplete;
 }
 
 function executeOperator(opr) {
-    if (currentValue==='') {
-        // Allow operatorFunction to change if left operand is already assigned
-        if (leftOperandValue!=null) operatorFunction = opr;
-    } else {
-        if (operatorFunction!=null && 
-            rightOperandValue==null &&
-            currentValue!='') {  
-            calculate();
-        };
-        rightOperandValue = null;
+    // If nothing was input into the display
+    if (currentValue==='') { 
+        // If an operator was already set, allow it to change.
+        if (typeof operatorFunction === 'function') operatorFunction = opr;
+    } else { 
+        // If press another operator consecutively
+        if (typeof operatorFunction === 'function') {
+            executeEquals();
+            equationComplete = false; 
+        }
+        // Set the left hand side of the equation
         leftOperandValue = parseFloat(currentValue);
-        operatorFunction = opr;
         currentValue = '';
-        resetFlag = false;
-    };
+        operatorFunction = opr;
+        rightOperandValue = null;
+    }
 }
 
 // Display interation functions
@@ -92,30 +94,33 @@ function pressButton(e) {
     if (poweredOn===false) return;
 
     // Change display when interacted with
-    setDislayImageInteraction();
+    setSmileTemporary();
 
     // Run function depending on button pressed
     switch (btn) {
         case 'add':
             executeOperator(add);
+            operatorShorthand = '+';
             break;
         case 'subtract':
             executeOperator(subtract);
+            operatorShorthand = '-';
             break;
         case 'multiply':
             executeOperator(multiply);
+            operatorShorthand = 'x';
             break;
         case 'divide':
             executeOperator(divide);
+            operatorShorthand = '÷';
             break;
         case 'digit':
             addDigit(e.target.innerHTML);
             break;
         case 'equals':
-            executeEquals();
-            setDisplayImageTemporary(
-                newUrl=imageUrls.happy, 
-                timeMs=1000);
+            if (executeEquals()) {
+                setHappyTemporary();
+            };
             break;
         case 'back':
             backspaceDigit();
@@ -134,58 +139,19 @@ function pressButton(e) {
         default:
             console.error('Invalid Button');
     }
+
+    if (currentValue===divideByZeroErrorString) {
+        setWorriedOverride();
+    }
+
     updateEquation();
     updateOutput();
 }
 
-function setDislayImageInteraction() {
-    // Set to smile when interacting
-    displayElem.style.backgroundImage = imageUrls.smile;
-
-    if (smileTimeout!=null) {
-        clearTimeout(smileTimeout);
-    }
-    smileTimeout = setTimeout(function() {
-        displayElem.style.backgroundImage = defaultImageUrl;
-    smileTimeout = null;
-    }, 5000);
-}
-
-function setDisplayImageTemporary(newUrl, timeMs) {
-    displayElem.style.backgroundImage = newUrl;
-    setTimeout(function() {
-        if (smileTimeout!=null && poweredOn) {
-            displayElem.style.backgroundImage = imageUrls.smile;
-        }
-        else
-        {
-            displayElem.style.backgroundImage = defaultImageUrl;
-        }
-    }, timeMs);
-}
-
-function powerOff() {
-    poweredOn = false;
-    equationElem.style.display = 'none';
-    outputElem.style.display = 'none';
-    defaultImageUrl = imageUrls.sleep;
-    displayElem.style.backgroundImage = defaultImageUrl;
-}
-
-function powerOn() {
-    poweredOn = true;
-    equationElem.style.display = 'block';
-    outputElem.style.display = 'block';
-    defaultImageUrl = imageUrls.straight;
-    displayElem.style.backgroundImage = defaultImageUrl;
-    resetAll();
-}
-
 function updateEquation() {
-    // Display the in progress equation
     const lhsString = leftOperandValue != null ? leftOperandValue : '';
     const rhsString = rightOperandValue != null ? rightOperandValue : '';
-    const operatorString = operatorFunction != null ? operatorFunction.name : '';
+    const operatorString = operatorFunction != null ? operatorShorthand : '';
     const equalsString = rightOperandValue != null ? '=' : '';
     equationElem.innerHTML = `${lhsString} 
                           ${operatorString} 
@@ -196,6 +162,62 @@ function updateEquation() {
 function updateOutput() {
     const stringSliced = currentValue.slice(0,maxLineDigits);
     outputElem.innerHTML = stringSliced;
+}
+
+
+// Expression Functions
+function setBgDisplay(imageUrl) {
+    baseImageUrl = imageUrl;
+    displayElem.style.backgroundImage = baseImageUrl;
+}
+
+function setSmileTemporary() {
+    displayElem.style.backgroundImage = imageUrls.smile;
+
+    if (smileTimeout!=null) clearTimeout(smileTimeout);
+    
+    smileTimeout = setTimeout(function() {
+        displayElem.style.backgroundImage = baseImageUrl;
+        smileTimeout = null;
+    }, smileTimeMs);
+}
+
+function setHappyTemporary() {
+    displayElem.style.backgroundImage = imageUrls.happy;
+
+    if (happyTimeout!=null) clearTimeout(happyTimeout);
+
+    happyTimeout = setTimeout(function() {
+        if (poweredOn) {
+            displayElem.style.backgroundImage = imageUrls.smile;
+        } else {
+            displayElem.style.backgroundImage = imageUrls.sleep;
+        }
+        happyTimeout = null;
+    }, happyTimeMs);
+}
+
+function setWorriedOverride() {
+    if (smileTimeout!=null) clearTimeout(smileTimeout);
+    if (happyTimeout!=null) clearTimeout(happyTimeout);
+    displayElem.style.backgroundImage = imageUrls.worried;
+}
+
+// Power Functions
+function powerOff() {
+    poweredOn = false;
+    equationElem.style.display = 'none';
+    outputElem.style.display = 'none';
+    setBgDisplay(imageUrls.sleep);
+    resetAll();
+}
+
+function powerOn() {
+    poweredOn = true;
+    equationElem.style.display = 'block';
+    outputElem.style.display = 'block';
+    setBgDisplay(imageUrls.straight);
+    resetAll();
 }
 
 function preloadImages() {
@@ -226,20 +248,26 @@ const imageUrls = {
 }
 
 const maxLineDigits = 14;
+const smileTimeMs = 5000;
+const happyTimeMs = 1000;
+
+const divideByZeroErrorString = '%ERROR%';
 
 // Global variables
 let poweredOn = false;
 
 let currentValue = '';
+let operatorShorthand = null;
 
 let leftOperandValue = null;
 let rightOperandValue = null;
 let operatorFunction = null;
 
-let resetFlag = false;
+let equationComplete = false;
 
-let defaultImageUrl = imageUrls.sleep;
+let baseImageUrl = imageUrls.sleep;
 let smileTimeout = null;
+let happyTimeout = null;
 
 // Power off by default, which updates initial display
 preloadImages();

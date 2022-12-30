@@ -43,7 +43,7 @@ img {
     border-radius: 22px;
     margin: 50px;
     padding: 40px;
-    height: 600px;
+    height: 650px;
     width: 450px;
 }
 
@@ -53,7 +53,7 @@ img {
     justify-content: space-between;
     align-items: center;
     background-color: #c8e3c2;
-    height: 250px;
+    height: 300px;
     width: 100%;
     box-sizing: border-box;
     margin: 0;
@@ -61,6 +61,7 @@ img {
     border-radius: 20px;
     background-size: cover;
     background-position: center;
+    background-position-y: 10px;
 }
 
 .output,
