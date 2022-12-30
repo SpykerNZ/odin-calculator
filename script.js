@@ -21,25 +21,25 @@ function operate(func, a, b) {
 
 // Digit Actions
 function backspaceDigit() {
-    if (resetEquationFlag) resetOperation();
+    if (resetEquationFlag) resetEquation();
     currentValue = currentValue.slice(0, -1)
 }
 
 function addDigit(value) {
-    if (resetEquationFlag) resetOperation();
+    if (resetEquationFlag) resetEquation();
     if (currentValue.length>=maxLineDigits) return;
     currentValue=currentValue+value.toString();
 }
 
 function addDot() {
-    if (resetEquationFlag) resetOperation();
+    if (resetEquationFlag) resetEquation();
     if (currentValue==='') currentValue='0';
     if (!currentValue.includes('.')) addDigit('.');
 }
 
 // Calculator Actions
 
-function resetOperation() {
+function resetEquation() {
     leftOperandValue = null;
     operatorFunction = null;
     rightOperandValue = null;
@@ -48,7 +48,7 @@ function resetOperation() {
 
 function resetAll() {
     currentValue = '';
-    resetOperation();
+    resetEquation();
 }
 
 function pressEquals() {
@@ -67,6 +67,7 @@ function calculate() {
 
 function pressOperator(opr) {
     if (currentValue==='') {
+        // Allow operatorFunction to change if left operand is already assigned
         if (leftOperandValue!=null) operatorFunction = opr;
     } else {
         calculate(); // calculate if possible
@@ -177,6 +178,7 @@ let currentValue = '';
 let leftOperandValue = null;
 let rightOperandValue = null;
 let operatorFunction = null;
+
 let resetEquationFlag = false;
 
 // Power off by default, which updates initial display
