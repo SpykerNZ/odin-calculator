@@ -88,7 +88,11 @@ function pressButton(e) {
     const btn = e.target.getAttribute('data-key');
 
     // Check for power button first
-    if (btn==='power') powerOn();
+    if (btn==='power') {
+        powerOn();
+    } else {
+        setDislayImageInteraction();
+    }
     if (poweredOn===false) return;
 
     // Run function depending on button pressed
@@ -110,6 +114,9 @@ function pressButton(e) {
             break;
         case 'equals':
             executeEquals();
+            setDisplayImageTemporary(
+                newUrl=happyImageUrl, 
+                timeMs=1000);
             break;
         case 'back':
             backspaceDigit();
@@ -129,21 +136,43 @@ function pressButton(e) {
             console.error('Invalid Button');
     }
     updateEquation();
-    UpdateOutput();
+    updateOutput();
+}
+
+function setDislayImageInteraction() {
+    // Set to smile when interacting
+    displayElem.style.backgroundImage = smileImageUrl;
+
+    if (smileTimeout!=null) {
+        clearTimeout(smileTimeout);
+    }
+    smileTimeout = setTimeout(function() {
+        displayElem.style.backgroundImage = defaultImageUrl;
+    smileTimeout = null;
+    }, 2000);
+}
+
+function setDisplayImageTemporary(newUrl, timeMs) {
+    displayElem.style.backgroundImage = newUrl;
+    setTimeout(function() {
+        displayElem.style.backgroundImage = defaultImageUrl;
+    }, timeMs);
 }
 
 function powerOff() {
     poweredOn = false;
     equationElem.style.display = 'none';
     outputElem.style.display = 'none';
-    displayElem.style.backgroundImage = "url(./images/face-sleep.gif)"
+    defaultImageUrl = sleepImageUrl;
+    displayElem.style.backgroundImage = defaultImageUrl;
 }
 
 function powerOn() {
     poweredOn = true;
     equationElem.style.display = 'block';
     outputElem.style.display = 'block';
-    displayElem.style.backgroundImage = "url(./images/face-smile.png)"
+    defaultImageUrl = straightImageUrl;
+    displayElem.style.backgroundImage = defaultImageUrl;
     resetAll();
 }
 
@@ -159,7 +188,7 @@ function updateEquation() {
                           ${equalsString}`
 }
 
-function UpdateOutput() {
+function updateOutput() {
     const stringSliced = currentValue.slice(0,maxLineDigits);
     outputElem.innerHTML = stringSliced;
 }
@@ -174,6 +203,14 @@ const displayElem = document.querySelector('.display');
 buttonsElem.forEach(digit => digit.addEventListener('mousedown', pressButton));
 
 // Constant values
+const sleepImageUrl = "url(./images/face-sleep.gif)";
+const smileImageUrl = "url(./images/face-smile.png)";
+const happyImageUrl = "url(./images/face-happy.png)";
+const straightImageUrl = "url(./images/face-straight.png)";
+
+let defaultImageUrl = sleepImageUrl;
+let smileTimeout = null;
+
 const maxLineDigits = 14;
 
 // Global values
