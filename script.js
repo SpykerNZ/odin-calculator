@@ -15,60 +15,68 @@ function divide(a,b) {
     return a/b;
 }
 
-function operate(operator, a, b) {
-    return operator(a,b);
+function operate(func, a, b) {
+    return func(a,b);
 }
 
-// Calculator Actions
+// Digit Actions
+
+function resetDigit() {
+    currentValue='0';
+    resetCurrentValue=false;
+}
+
 function backspaceDigit() {
-    displayString = displayString.slice(0, -1);
-    if (displayString=='') displayString='0';
+    if (resetCurrentValue) resetDigit();
+    currentValue = currentValue.slice(0, -1);
+    if (currentValue=='') currentValue='0';
 }
 
 function addDigit(value) {
-    if (displayString.length>=maxLineDigits) return;
-    if (displayString==='0') {
-        displayString=value.toString();
+    if (resetCurrentValue) resetDigit();
+    if (currentValue.length>=maxLineDigits) return;
+    if (currentValue==='0') {
+        currentValue=value.toString();
     } else
     {
-        displayString=displayString+value.toString();
+        currentValue=currentValue+value.toString();
     }
 }
 
 function addDot() {
-    if (displayString==='0') displayString='0.';
-    if (!displayString.includes('.')) addDigit('.');
-}
-
-function storeNumber(number) {
-    numbersArray.push(number);
-}
-
-function storeOperator(opr) {
-    operatorsArray.push(opr);
+    if (resetCurrentValue) resetDigit();
+    if (currentValue==='0') currentValue='0.';
+    if (!currentValue.includes('.')) addDigit('.');
 }
 
 function setDigits(number) {
-    displayString = number.toString(); 
+    currentValue = number.toString(); 
 }
 
+// Calculator Actions
+
 function calculate() {
-    storeNumber(parseFloat(displayString));
-    const length = numbersArray.length;
-    let total = numbersArray[0];
-    for (let i=1; i<length; i++) {
-        if (typeof operatorsArray[i-1] == 'function') {
-            total = operate(operatorsArray[i-1], total, numbersArray[i]);
-        }
-    }
-    clearAll();
-    setDigits(total);
+    if (operatorFunction==null) return;
+    rightOperand = parseFloat(currentValue);
+    result = operate(operatorFunction, leftOperand, rightOperand);
+    currentValue = result.toString();
+    resetCurrentValue = true;
+    resetOperation = true;
 }
 
 function clearAll() {
-    displayString = '0';
-    numbersArray = [];
-    operatorsArray = [];
+    currentValue = '0';
+    leftOperand = null;
+    operatorFunction = null;
+    rightOperand = null;
+}
+
+function pressOperator(opr) {
+    calculate(); // calculate if possible
+    rightOperand = null;
+    leftOperand = parseFloat(currentValue);
+    operatorFunction = opr;
+    resetCurrentValue = true;
 }
 
 // Display interation functions
@@ -117,49 +125,64 @@ function pressButton(e) {
         default:
             console.error('Invalid Button');
     }
-    updateDisplay();
-}
-
-function pressOperator(opr) {
-    storeOperator(opr);
-    storeNumber(parseFloat(displayString));
-    displayString = '0';
+    updateEquation();
+    UpdateOutput();
 }
 
 function powerOff() {
     poweredOn = false;
-    output.style.display = 'none';
-    display.style.backgroundImage = "url(./images/face-sleep.gif)"
+    outputElem.style.display = 'none';
+    displayElem.style.backgroundImage = "url(./images/face-sleep.gif)"
 }
 
 function powerOn() {
     poweredOn = true;
-    output.style.display = 'block';
-    display.style.backgroundImage = "url(./images/face-smile.png)"
+    outputElem.style.display = 'block';
+    displayElem.style.backgroundImage = "url(./images/face-smile.png)"
     clearAll();
 }
 
-function updateDisplay() {
-    const stringSliced = displayString.slice(0,maxLineDigits);
-    output.innerHTML = stringSliced;
+function updateEquation() {
+    // Display the in progress equation
+    const lhsString = leftOperand != null ? leftOperand : '';
+    const rhsString = rightOperand != null ? rightOperand : '';
+    const operatorString = operatorFunction != null ? operatorFunction.name : '';
+    const equalsString = rightOperand != null ? '=' : '';
+    equationElem.innerHTML = `${lhsString} 
+                          ${operatorString} 
+                          ${rhsString} 
+                          ${equalsString}`
+}
+
+function UpdateOutput() {
+    const stringSliced = currentValue.slice(0,maxLineDigits);
+    outputElem.innerHTML = stringSliced;
 }
 
 // Grab relevant elements from DOM
-const buttons = document.querySelectorAll('.button');
-const output = document.querySelector('.output');
-const display = document.querySelector('.display');
+const buttonsElem = document.querySelectorAll('.button');
+const outputElem = document.querySelector('.output');
+const equationElem = document.querySelector('.equation');
+const displayElem = document.querySelector('.display');
 
 // Add Event Listeners
-buttons.forEach(digit => digit.addEventListener('mousedown', pressButton));
+buttonsElem.forEach(digit => digit.addEventListener('mousedown', pressButton));
 
 // Constant values
 const maxLineDigits = 14;
 
 // Global values
 let poweredOn = false;
-let displayString = '0';
-let numbersArray = [];
-let operatorsArray = [];
 
-// Power off by default
+let currentValue = '0';
+let resetCurrentValue = false;
+let resetOperation = false;
+
+let leftOperand = null;
+let rightOperand = null;
+let operatorFunction = null;
+
+// Power off by default, which updates initial display
 powerOff();
+
+powerOn(); // TEMP FOR TESTING
