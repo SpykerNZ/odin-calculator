@@ -55,6 +55,7 @@ function executeEquals() {
         currentValue = result.toString();
         equationComplete = true;
     }
+    return equationComplete;
 }
 
 function executeOperator(opr) {
@@ -110,10 +111,11 @@ function pressButton(e) {
             addDigit(e.target.innerHTML);
             break;
         case 'equals':
-            executeEquals();
-            setDisplayImageTemporary(
-                newUrl=imageUrls.happy, 
-                timeMs=1000);
+            if (executeEquals()) {
+                setDisplayImageTemporary(
+                    newUrl=imageUrls.happy, 
+                    timeMs=1000);
+            };
             break;
         case 'back':
             backspaceDigit();
