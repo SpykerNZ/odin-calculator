@@ -48,7 +48,7 @@ function resetAll() {
 
 function equationReady() {
     return (typeof operatorFunction === 'function' && 
-            rightOperandValue===null &&
+            rightOperandValue==null &&
             currentValue!=='');
 }
 
@@ -66,12 +66,13 @@ function executeOperator(opr) {
         // Allow operatorFunction to change if left operand is already assigned
         if (leftOperandValue!=null) operatorFunction = opr;
     } else {
+        // If press another operator consecutively
         executeEquals();
-        rightOperandValue = null;
-        leftOperandValue = parseFloat(currentValue);
-        operatorFunction = opr;
-        currentValue = '';
         resetFlag = false;
+        leftOperandValue = parseFloat(currentValue);
+        rightOperandValue = null;
+        currentValue = '';
+        operatorFunction = opr;
     };
 }
 
