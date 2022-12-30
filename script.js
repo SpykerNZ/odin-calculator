@@ -54,6 +54,9 @@ function executeEquals() {
         result = operate(operatorFunction, leftOperandValue, rightOperandValue);
         currentValue = result.toString();
         equationComplete = true;
+        if (!isFinite(result)) {
+            currentValue=divideByZeroErrorString;
+        }
     }
     return equationComplete;
 }
@@ -132,6 +135,11 @@ function pressButton(e) {
         default:
             console.error('Invalid Button');
     }
+
+    if (currentValue===divideByZeroErrorString) {
+        setWorriedOverride();
+    }
+
     updateEquation();
     updateOutput();
 }
@@ -146,34 +154,32 @@ function setBgDisplay(imageUrl) {
 function setSmileTemporary(timeMs) {
     displayElem.style.backgroundImage = imageUrls.smile;
 
-    if (smileTimeout!=null) {
-        clearTimeout(smileTimeout);
-    }
+    if (smileTimeout!=null) clearTimeout(smileTimeout);
+    
     smileTimeout = setTimeout(function() {
         displayElem.style.backgroundImage = baseImageUrl;
-    smileTimeout = null;
+        smileTimeout = null;
     }, timeMs);
 }
 
 function setHappyTemporary(timeMs) {
     displayElem.style.backgroundImage = imageUrls.happy;
 
-    if (happyTimeout!=null) {
-        clearTimeout(happyTimeout);
-    }
+    if (happyTimeout!=null) clearTimeout(happyTimeout);
     happyTimeout = setTimeout(function() {
         if (poweredOn) {
             displayElem.style.backgroundImage = imageUrls.smile;
         } else {
             displayElem.style.backgroundImage = imageUrls.sleep;
         }
-        
         happyTimeout = null;
     }, timeMs);
 }
 
-function setWorriedTemporary(timeMs) {
-    displayElem.style.backgroundImage = imageUrls.happy;
+function setWorriedOverride() {
+    if (smileTimeout!=null) clearTimeout(smileTimeout);
+    if (happyTimeout!=null) clearTimeout(happyTimeout);
+    displayElem.style.backgroundImage = imageUrls.worried;
 }
 
 // Power Functions
@@ -240,6 +246,8 @@ const imageUrls = {
 const maxLineDigits = 14;
 const smileTimeMs = 5000;
 const happyTimeMs = 1000;
+
+const divideByZeroErrorString = '%ERROR%';
 
 // Global variables
 let poweredOn = false;
