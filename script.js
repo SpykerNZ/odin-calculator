@@ -207,6 +207,7 @@ const sleepImageUrl = "url(./images/face-sleep.gif)";
 const smileImageUrl = "url(./images/face-smile.png)";
 const happyImageUrl = "url(./images/face-happy.png)";
 const straightImageUrl = "url(./images/face-straight.png)";
+const worriedImageUrl = "url(./images/face-worried.png)";
 
 let defaultImageUrl = sleepImageUrl;
 let smileTimeout = null;
@@ -226,5 +227,3 @@ let resetEquationFlag = false;
 
 // Power off by default, which updates initial display
 powerOff();
-
-powerOn(); // TEMP FOR TESTING
