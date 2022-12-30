@@ -21,33 +21,28 @@ function operate(func, a, b) {
 
 // Digit Actions
 function backspaceDigit() {
-    if (resetEquationFlag) resetEquation();
+    if (resetFlag) resetAll();
     currentValue = currentValue.slice(0, -1)
 }
 
 function addDigit(value) {
-    if (resetEquationFlag) resetEquation();
+    if (resetFlag) resetAll();
     if (currentValue.length>=maxLineDigits) return;
     currentValue=currentValue+value.toString();
 }
 
 function addDot() {
-    if (resetEquationFlag) resetEquation();
+    if (resetFlag) resetAll();
     if (currentValue==='') currentValue='0';
     if (!currentValue.includes('.')) addDigit('.');
 }
 
-// Calculator Actions
-function resetEquation() {
+function resetAll() {
+    currentValue = '';
     leftOperandValue = null;
     operatorFunction = null;
     rightOperandValue = null;
-    resetEquationFlag = false;
-}
-
-function resetAll() {
-    currentValue = '';
-    resetEquation();
+    resetFlag = false;
 }
 
 function calculate() {
@@ -61,7 +56,7 @@ function executeEquals() {
         rightOperandValue==null &&
         currentValue!='') {  
         calculate();
-        resetEquationFlag = true;
+        resetFlag = true;
     }
 }
 
@@ -79,7 +74,7 @@ function executeOperator(opr) {
         leftOperandValue = parseFloat(currentValue);
         operatorFunction = opr;
         currentValue = '';
-        resetEquationFlag = false;
+        resetFlag = false;
     };
 }
 
@@ -233,7 +228,7 @@ let leftOperandValue = null;
 let rightOperandValue = null;
 let operatorFunction = null;
 
-let resetEquationFlag = false;
+let resetFlag = false;
 
 // Power off by default, which updates initial display
 powerOff();
