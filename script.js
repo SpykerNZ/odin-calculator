@@ -90,10 +90,14 @@ function pressButton(e) {
     // Check for power button first
     if (btn==='power') {
         powerOn();
-    } else {
-        setDislayImageInteraction();
+        return;
     }
+
+    // Don't run if not powered
     if (poweredOn===false) return;
+
+    // Change display when interacted with
+    setDislayImageInteraction();
 
     // Run function depending on button pressed
     switch (btn) {
