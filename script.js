@@ -21,33 +21,28 @@ function operate(func, a, b) {
 
 // Digit Actions
 function backspaceDigit() {
-    if (resetEquationFlag) resetEquation();
+    if (resetFlag) resetAll();
     currentValue = currentValue.slice(0, -1)
 }
 
 function addDigit(value) {
-    if (resetEquationFlag) resetEquation();
+    if (resetFlag) resetAll();
     if (currentValue.length>=maxLineDigits) return;
     currentValue=currentValue+value.toString();
 }
 
 function addDot() {
-    if (resetEquationFlag) resetEquation();
+    if (resetFlag) resetAll();
     if (currentValue==='') currentValue='0';
     if (!currentValue.includes('.')) addDigit('.');
 }
 
-// Calculator Actions
-function resetEquation() {
+function resetAll() {
+    currentValue = '';
     leftOperandValue = null;
     operatorFunction = null;
     rightOperandValue = null;
-    resetEquationFlag = false;
-}
-
-function resetAll() {
-    currentValue = '';
-    resetEquation();
+    resetFlag = false;
 }
 
 function calculate() {
@@ -61,7 +56,7 @@ function executeEquals() {
         rightOperandValue==null &&
         currentValue!='') {  
         calculate();
-        resetEquationFlag = true;
+        resetFlag = true;
     }
 }
 
@@ -79,7 +74,7 @@ function executeOperator(opr) {
         leftOperandValue = parseFloat(currentValue);
         operatorFunction = opr;
         currentValue = '';
-        resetEquationFlag = false;
+        resetFlag = false;
     };
 }
 
@@ -119,7 +114,7 @@ function pressButton(e) {
         case 'equals':
             executeEquals();
             setDisplayImageTemporary(
-                newUrl=happyImageUrl, 
+                newUrl=imageUrls.happy, 
                 timeMs=1000);
             break;
         case 'back':
@@ -145,7 +140,7 @@ function pressButton(e) {
 
 function setDislayImageInteraction() {
     // Set to smile when interacting
-    displayElem.style.backgroundImage = smileImageUrl;
+    displayElem.style.backgroundImage = imageUrls.smile;
 
     if (smileTimeout!=null) {
         clearTimeout(smileTimeout);
@@ -160,7 +155,7 @@ function setDisplayImageTemporary(newUrl, timeMs) {
     displayElem.style.backgroundImage = newUrl;
     setTimeout(function() {
         if (smileTimeout!=null && poweredOn) {
-            displayElem.style.backgroundImage = smileImageUrl;
+            displayElem.style.backgroundImage = imageUrls.smile;
         }
         else
         {
@@ -173,7 +168,7 @@ function powerOff() {
     poweredOn = false;
     equationElem.style.display = 'none';
     outputElem.style.display = 'none';
-    defaultImageUrl = sleepImageUrl;
+    defaultImageUrl = imageUrls.sleep;
     displayElem.style.backgroundImage = defaultImageUrl;
 }
 
@@ -181,7 +176,7 @@ function powerOn() {
     poweredOn = true;
     equationElem.style.display = 'block';
     outputElem.style.display = 'block';
-    defaultImageUrl = straightImageUrl;
+    defaultImageUrl = imageUrls.straight;
     displayElem.style.backgroundImage = defaultImageUrl;
     resetAll();
 }
@@ -203,6 +198,15 @@ function updateOutput() {
     outputElem.innerHTML = stringSliced;
 }
 
+function preloadImages() {
+    for (let key in imageUrls) {
+        img = new Image();
+        img.src = imageUrls[key].substring(
+            imageUrls[key].indexOf('(')+1,
+            imageUrls[key].indexOf(")"));
+    }
+}
+
 // Grab relevant elements from DOM
 const buttonsElem = document.querySelectorAll('.button');
 const outputElem = document.querySelector('.output');
@@ -212,19 +216,18 @@ const displayElem = document.querySelector('.display');
 // Add Event Listeners
 buttonsElem.forEach(digit => digit.addEventListener('mousedown', pressButton));
 
-// Constant values
-const sleepImageUrl = "url(./images/face-sleep.gif)";
-const smileImageUrl = "url(./images/face-smile.png)";
-const happyImageUrl = "url(./images/face-happy.png)";
-const straightImageUrl = "url(./images/face-straight.png)";
-const worriedImageUrl = "url(./images/face-worried.png)";
-
-let defaultImageUrl = sleepImageUrl;
-let smileTimeout = null;
+// Constant variables
+const imageUrls = {
+    sleep: "url(./images/face-sleep.gif)",
+    smile: "url(./images/face-smile.png)",
+    happy: "url(./images/face-happy.png)",
+    straight: "url(./images/face-straight.png)",
+    worried: "url(./images/face-worried.png)"
+}
 
 const maxLineDigits = 14;
 
-// Global values
+// Global variables
 let poweredOn = false;
 
 let currentValue = '';
@@ -233,7 +236,11 @@ let leftOperandValue = null;
 let rightOperandValue = null;
 let operatorFunction = null;
 
-let resetEquationFlag = false;
+let resetFlag = false;
+
+let defaultImageUrl = imageUrls.sleep;
+let smileTimeout = null;
 
 // Power off by default, which updates initial display
+preloadImages();
 powerOff();
