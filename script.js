@@ -38,7 +38,6 @@ function addDot() {
 }
 
 // Calculator Actions
-
 function resetEquation() {
     leftOperandValue = null;
     operatorFunction = null;
@@ -51,26 +50,31 @@ function resetAll() {
     resetEquation();
 }
 
-function pressEquals() {
-    calculate();
-    resetEquationFlag = true;
-}
-
 function calculate() {
-    if (operatorFunction==null || 
-        rightOperandValue!=null ||
-        currentValue==='') return;
     rightOperandValue = parseFloat(currentValue);
     result = operate(operatorFunction, leftOperandValue, rightOperandValue);
     currentValue = result.toString();
 }
 
-function pressOperator(opr) {
+function executeEquals() {
+    if (operatorFunction!=null && 
+        rightOperandValue==null &&
+        currentValue!='') {  
+        calculate();
+        resetEquationFlag = true;
+    }
+}
+
+function executeOperator(opr) {
     if (currentValue==='') {
         // Allow operatorFunction to change if left operand is already assigned
         if (leftOperandValue!=null) operatorFunction = opr;
     } else {
-        calculate(); // calculate if possible
+        if (operatorFunction!=null && 
+            rightOperandValue==null &&
+            currentValue!='') {  
+            calculate();
+        };
         rightOperandValue = null;
         leftOperandValue = parseFloat(currentValue);
         operatorFunction = opr;
@@ -85,27 +89,27 @@ function pressButton(e) {
 
     // Check for power button first
     if (btn==='power') powerOn();
-    if (powerOn===false) return;
+    if (poweredOn===false) return;
 
     // Run function depending on button pressed
     switch (btn) {
         case 'add':
-            pressOperator(add);
+            executeOperator(add);
             break;
         case 'subtract':
-            pressOperator(subtract);
+            executeOperator(subtract);
             break;
         case 'multiply':
-            pressOperator(multiply);
+            executeOperator(multiply);
             break;
         case 'divide':
-            pressOperator(divide);
+            executeOperator(divide);
             break;
         case 'digit':
             addDigit(e.target.innerHTML);
             break;
         case 'equals':
-            pressEquals();
+            executeEquals();
             break;
         case 'back':
             backspaceDigit();
@@ -130,12 +134,14 @@ function pressButton(e) {
 
 function powerOff() {
     poweredOn = false;
+    equationElem.style.display = 'none';
     outputElem.style.display = 'none';
     displayElem.style.backgroundImage = "url(./images/face-sleep.gif)"
 }
 
 function powerOn() {
     poweredOn = true;
+    equationElem.style.display = 'block';
     outputElem.style.display = 'block';
     displayElem.style.backgroundImage = "url(./images/face-smile.png)"
     resetAll();
