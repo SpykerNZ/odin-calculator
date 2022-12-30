@@ -100,15 +100,19 @@ function pressButton(e) {
     switch (btn) {
         case 'add':
             executeOperator(add);
+            operatorShorthand = '+';
             break;
         case 'subtract':
             executeOperator(subtract);
+            operatorShorthand = '-';
             break;
         case 'multiply':
             executeOperator(multiply);
+            operatorShorthand = 'x';
             break;
         case 'divide':
             executeOperator(divide);
+            operatorShorthand = '÷';
             break;
         case 'digit':
             addDigit(e.target.innerHTML);
@@ -142,6 +146,22 @@ function pressButton(e) {
 
     updateEquation();
     updateOutput();
+}
+
+function updateEquation() {
+    const lhsString = leftOperandValue != null ? leftOperandValue : '';
+    const rhsString = rightOperandValue != null ? rightOperandValue : '';
+    const operatorString = operatorFunction != null ? operatorShorthand : '';
+    const equalsString = rightOperandValue != null ? '=' : '';
+    equationElem.innerHTML = `${lhsString} 
+                          ${operatorString} 
+                          ${rhsString} 
+                          ${equalsString}`
+}
+
+function updateOutput() {
+    const stringSliced = currentValue.slice(0,maxLineDigits);
+    outputElem.innerHTML = stringSliced;
 }
 
 
@@ -200,23 +220,6 @@ function powerOn() {
     resetAll();
 }
 
-function updateEquation() {
-    // Display the in progress equation
-    const lhsString = leftOperandValue != null ? leftOperandValue : '';
-    const rhsString = rightOperandValue != null ? rightOperandValue : '';
-    const operatorString = operatorFunction != null ? operatorFunction.name : '';
-    const equalsString = rightOperandValue != null ? '=' : '';
-    equationElem.innerHTML = `${lhsString} 
-                          ${operatorString} 
-                          ${rhsString} 
-                          ${equalsString}`
-}
-
-function updateOutput() {
-    const stringSliced = currentValue.slice(0,maxLineDigits);
-    outputElem.innerHTML = stringSliced;
-}
-
 function preloadImages() {
     for (let key in imageUrls) {
         img = new Image();
@@ -254,6 +257,7 @@ const divideByZeroErrorString = '%ERROR%';
 let poweredOn = false;
 
 let currentValue = '';
+let operatorShorthand = null;
 
 let leftOperandValue = null;
 let rightOperandValue = null;
