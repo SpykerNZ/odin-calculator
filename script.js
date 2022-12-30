@@ -21,46 +21,60 @@ function operate(func, a, b) {
 
 // Digit Actions
 function backspaceDigit() {
+    if (resetEquationFlag) resetOperation();
     currentValue = currentValue.slice(0, -1)
 }
 
 function addDigit(value) {
+    if (resetEquationFlag) resetOperation();
     if (currentValue.length>=maxLineDigits) return;
     currentValue=currentValue+value.toString();
 }
 
 function addDot() {
+    if (resetEquationFlag) resetOperation();
     if (currentValue==='') currentValue='0';
     if (!currentValue.includes('.')) addDigit('.');
 }
 
 // Calculator Actions
 
-function calculate() {
-    if (operatorFunction==null || 
-        rightOperand!=null ||
-        currentValue==='') return;
-    rightOperand = parseFloat(currentValue);
-    result = operate(operatorFunction, leftOperand, rightOperand);
-    currentValue = result.toString();
+function resetOperation() {
+    leftOperandValue = null;
+    operatorFunction = null;
+    rightOperandValue = null;
+    resetEquationFlag = false;
 }
 
-function clearAll() {
+function resetAll() {
     currentValue = '';
-    leftOperand = null;
-    operatorFunction = null;
-    rightOperand = null;
+    resetOperation();
+}
+
+function pressEquals() {
+    calculate();
+    resetEquationFlag = true;
+}
+
+function calculate() {
+    if (operatorFunction==null || 
+        rightOperandValue!=null ||
+        currentValue==='') return;
+    rightOperandValue = parseFloat(currentValue);
+    result = operate(operatorFunction, leftOperandValue, rightOperandValue);
+    currentValue = result.toString();
 }
 
 function pressOperator(opr) {
     if (currentValue==='') {
-        operatorFunction = opr;
+        if (leftOperandValue!=null) operatorFunction = opr;
     } else {
         calculate(); // calculate if possible
-        rightOperand = null;
-        leftOperand = parseFloat(currentValue);
+        rightOperandValue = null;
+        leftOperandValue = parseFloat(currentValue);
         operatorFunction = opr;
         currentValue = '';
+        resetEquationFlag = false;
     };
 }
 
@@ -90,13 +104,13 @@ function pressButton(e) {
             addDigit(e.target.innerHTML);
             break;
         case 'equals':
-            calculate();
+            pressEquals();
             break;
         case 'back':
             backspaceDigit();
             break;
         case 'clear':
-            clearAll();
+            resetAll();
             break;
         case 'dot':
             addDot();
@@ -123,15 +137,15 @@ function powerOn() {
     poweredOn = true;
     outputElem.style.display = 'block';
     displayElem.style.backgroundImage = "url(./images/face-smile.png)"
-    clearAll();
+    resetAll();
 }
 
 function updateEquation() {
     // Display the in progress equation
-    const lhsString = leftOperand != null ? leftOperand : '';
-    const rhsString = rightOperand != null ? rightOperand : '';
+    const lhsString = leftOperandValue != null ? leftOperandValue : '';
+    const rhsString = rightOperandValue != null ? rightOperandValue : '';
     const operatorString = operatorFunction != null ? operatorFunction.name : '';
-    const equalsString = rightOperand != null ? '=' : '';
+    const equalsString = rightOperandValue != null ? '=' : '';
     equationElem.innerHTML = `${lhsString} 
                           ${operatorString} 
                           ${rhsString} 
@@ -160,9 +174,10 @@ let poweredOn = false;
 
 let currentValue = '';
 
-let leftOperand = null;
-let rightOperand = null;
+let leftOperandValue = null;
+let rightOperandValue = null;
 let operatorFunction = null;
+let resetEquationFlag = false;
 
 // Power off by default, which updates initial display
 powerOff();
