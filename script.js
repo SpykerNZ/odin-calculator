@@ -21,18 +21,18 @@ function operate(func, a, b) {
 
 // Digit Actions
 function backspaceDigit() {
-    if (resetFlag) resetAll();
+    if (equationComplete) resetAll();
     currentValue = currentValue.slice(0, -1)
 }
 
 function addDigit(value) {
-    if (resetFlag) resetAll();
+    if (equationComplete) resetAll();
     if (currentValue.length>=maxLineDigits) return;
     currentValue=currentValue+value.toString();
 }
 
 function addDot() {
-    if (resetFlag) resetAll();
+    if (equationComplete) resetAll();
     if (currentValue==='') currentValue='0';
     if (!currentValue.includes('.')) addDigit('.');
 }
@@ -43,37 +43,37 @@ function resetAll() {
     leftOperandValue = null;
     operatorFunction = null;
     rightOperandValue = null;
-    resetFlag = false;
-}
-
-function equationReady() {
-    return (typeof operatorFunction === 'function' && 
-            rightOperandValue==null &&
-            currentValue!=='');
+    equationComplete = false;
 }
 
 function executeEquals() {
-    if (equationReady()) {
+    if (typeof operatorFunction === 'function' && 
+        rightOperandValue==null &&
+        currentValue!=='') {
         rightOperandValue = parseFloat(currentValue);
         result = operate(operatorFunction, leftOperandValue, rightOperandValue);
         currentValue = result.toString();
-        resetFlag = true;
+        equationComplete = true;
     }
 }
 
 function executeOperator(opr) {
-    if (currentValue==='') {
-        // Allow operatorFunction to change if left operand is already assigned
-        if (leftOperandValue!=null) operatorFunction = opr;
-    } else {
+    // If nothing was input into the display
+    if (currentValue==='') { 
+        // If an operator was already set, allow it to change.
+        if (typeof operatorFunction === 'function') operatorFunction = opr;
+    } else { 
         // If press another operator consecutively
-        executeEquals();
-        resetFlag = false;
+        if (typeof operatorFunction === 'function') {
+            executeEquals();
+            equationComplete = false; 
+        }
+        // Set the left hand side of the equation
         leftOperandValue = parseFloat(currentValue);
-        rightOperandValue = null;
         currentValue = '';
         operatorFunction = opr;
-    };
+        rightOperandValue = null;
+    }
 }
 
 // Display interation functions
@@ -234,7 +234,7 @@ let leftOperandValue = null;
 let rightOperandValue = null;
 let operatorFunction = null;
 
-let resetFlag = false;
+let equationComplete = false;
 
 let defaultImageUrl = imageUrls.sleep;
 let smileTimeout = null;
