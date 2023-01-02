@@ -19,6 +19,36 @@ type Operator = (a: number, b: number) => number;
 
 type BMOExpression = keyof ImageUrls;
 
+// Global Variables
+const imageUrls: ImageUrls = {
+  sleep: "url(./images/face-sleep.gif)",
+  smile: "url(./images/face-smile.png)",
+  happy: "url(./images/face-happy.png)",
+  neutral: "url(./images/face-neutral.png)",
+  worried: "url(./images/face-worried.png)",
+};
+
+const maxLineDigits = 14;
+const smileTimeMs = 5000;
+const happyTimeMs = 1000;
+
+const divideByZeroErrorString = "%ERROR%";
+
+let poweredOn = false;
+
+let currentValue: string = "";
+let operatorShorthand: string | null = null;
+
+let leftOperandValue: number | null = null;
+let rightOperandValue: number | null = null;
+let operatorFunction: Operator | null = null;
+
+let equationComplete: boolean = false;
+
+let baseImageUrl: string = imageUrls.sleep;
+let bmoExpressionState: BMOExpression;
+let bmoExpressionTimerID: number | undefined = undefined;
+
 // Calculator Functions
 function add(a: number, b: number): number {
   return a + b;
@@ -269,37 +299,6 @@ const displayElem = checkElementNull(document.querySelector(".display"));
 buttonsElem.forEach((digit) =>
   digit.addEventListener("mousedown", pressButton)
 );
-
-// Constant variables
-const imageUrls: ImageUrls = {
-  sleep: "url(./images/face-sleep.gif)",
-  smile: "url(./images/face-smile.png)",
-  happy: "url(./images/face-happy.png)",
-  neutral: "url(./images/face-neutral.png)",
-  worried: "url(./images/face-worried.png)",
-};
-
-const maxLineDigits = 14;
-const smileTimeMs = 5000;
-const happyTimeMs = 1000;
-
-const divideByZeroErrorString = "%ERROR%";
-
-// Global variables
-let poweredOn = false;
-
-let currentValue: string = "";
-let operatorShorthand: string | null = null;
-
-let leftOperandValue: number | null = null;
-let rightOperandValue: number | null = null;
-let operatorFunction: Operator | null = null;
-
-let equationComplete: boolean = false;
-
-let baseImageUrl: string = imageUrls.sleep;
-let bmoExpressionState: BMOExpression;
-let bmoExpressionTimerID: number | undefined = undefined;
 
 // Power off by default, which updates initial display
 preloadImages();
