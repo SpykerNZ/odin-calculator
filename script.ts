@@ -1,21 +1,24 @@
 // Calculator Functions
-function add(a, b) {
+function add(a: number, b: number): number {
     return a+b;
 }
 
-function subtract(a,b) {
+function subtract(a: number,b: number): number {
     return a-b;
 }
 
-function multiply(a,b) {
+function multiply(a: number,b: number): number {
     return a*b;
 }
 
-function divide(a,b) {
+function divide(a: number,b: number): number {
     return a/b;
 }
 
-function operate(func, a, b) {
+type Operator = (a: number, b: number) => number;
+function operate(func: Operator, 
+                 a: number, 
+                 b: number): number {
     return func(a,b);
 }
 
@@ -25,7 +28,7 @@ function backspaceDigit() {
     currentValue = currentValue.slice(0, -1)
 }
 
-function addDigit(value) {
+function addDigit(value: string) {
     if (equationComplete) resetAll();
     if (currentValue.length>=maxLineDigits) return;
     currentValue=currentValue+value.toString();
@@ -47,11 +50,12 @@ function resetAll() {
 }
 
 function executeEquals() {
-    if (typeof operatorFunction === 'function' && 
+    if (typeof operatorFunction === 'function' &&
+        leftOperandValue!=null &&
         rightOperandValue==null &&
         currentValue!=='') {
         rightOperandValue = parseFloat(currentValue);
-        result = operate(operatorFunction, leftOperandValue, rightOperandValue);
+        let result = operate(operatorFunction, leftOperandValue, rightOperandValue);
         currentValue = result.toString();
         equationComplete = true;
         if (!isFinite(result)) {
@@ -61,7 +65,7 @@ function executeEquals() {
     return equationComplete;
 }
 
-function executeOperator(opr) {
+function executeOperator(opr: Operator) {
     // If nothing was input into the display
     if (currentValue==='') { 
         // If an operator was already set, allow it to change.
@@ -81,7 +85,9 @@ function executeOperator(opr) {
 }
 
 // Display interation functions
-function pressButton(e) {
+function pressButton(e: Event) {
+    if (!(e.target instanceof Element)) { throw Error("CRITICAL ERROR") };
+
     const btn = e.target.getAttribute('data-key');
 
     // Check for power button first
@@ -153,7 +159,7 @@ function updateEquation() {
     const rhsString = rightOperandValue != null ? rightOperandValue : '';
     const operatorString = operatorFunction != null ? operatorShorthand : '';
     const equalsString = rightOperandValue != null ? '=' : '';
-    equationElem.innerHTML = `${lhsString} 
+    equationElem.innerHTML = `${lhsString}
                           ${operatorString} 
                           ${rhsString} 
                           ${equalsString}`
@@ -166,7 +172,7 @@ function updateOutput() {
 
 
 // Expression Functions
-function setBgDisplay(imageUrl) {
+function setBgDisplay(imageUrl: string) {
     baseImageUrl = imageUrl;
     displayElem.style.backgroundImage = baseImageUrl;
 }
@@ -221,25 +227,39 @@ function powerOn() {
 }
 
 function preloadImages() {
-    for (let key in imageUrls) {
-        img = new Image();
+    let key: keyof ImageUrls;
+    for (key in imageUrls) {
+        let img = new Image();
         img.src = imageUrls[key].substring(
             imageUrls[key].indexOf('(')+1,
             imageUrls[key].indexOf(")"));
     }
 }
 
+function checkElementNull(elem: Element | null): HTMLElement {
+    if (!elem) { throw Error("Element is null!")};
+    if (!(elem instanceof HTMLElement)) { throw Error("Element is not HTML!")};
+    return elem;
+}
+
 // Grab relevant elements from DOM
 const buttonsElem = document.querySelectorAll('.button');
-const outputElem = document.querySelector('.output');
-const equationElem = document.querySelector('.equation');
-const displayElem = document.querySelector('.display');
+const outputElem = checkElementNull(document.querySelector('.output'));
+const equationElem = checkElementNull(document.querySelector('.equation'));
+const displayElem = checkElementNull(document.querySelector('.display'));
 
 // Add Event Listeners
 buttonsElem.forEach(digit => digit.addEventListener('mousedown', pressButton));
 
 // Constant variables
-const imageUrls = {
+type ImageUrls = {
+    sleep: string,
+    smile: string,
+    happy: string,
+    straight: string,
+    worried: string
+};
+const imageUrls: ImageUrls = {
     sleep: "url(./images/face-sleep.gif)",
     smile: "url(./images/face-smile.png)",
     happy: "url(./images/face-happy.png)",
@@ -256,18 +276,18 @@ const divideByZeroErrorString = '%ERROR%';
 // Global variables
 let poweredOn = false;
 
-let currentValue = '';
-let operatorShorthand = null;
+let currentValue: string = '';
+let operatorShorthand: string | null = null;
 
-let leftOperandValue = null;
-let rightOperandValue = null;
-let operatorFunction = null;
+let leftOperandValue: number | null = null;
+let rightOperandValue: number | null = null;
+let operatorFunction: Operator | null = null;
 
-let equationComplete = false;
+let equationComplete: boolean = false;
 
-let baseImageUrl = imageUrls.sleep;
-let smileTimeout = null;
-let happyTimeout = null;
+let baseImageUrl: string = imageUrls.sleep;
+let smileTimeout: number | null = null;
+let happyTimeout: number| null = null;
 
 // Power off by default, which updates initial display
 preloadImages();
