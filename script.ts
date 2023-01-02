@@ -202,20 +202,6 @@ function setDisplayBmoExpression(bmoExpression: BMOExpression) {
   updateExpression();
 }
 
-/*
-setExpressionState(state) {
-  clear the timer
-  set image to state
-  if new state is happy {
-    start 1 second timer
-    (transition to smile)
-  } else if new state is smile {
-    start 5 second timer
-    (transition to neutral)
-  }
-};
-*/
-
 function updateBmoExpression(bmoExpression: BMOExpression) {
   clearTimeout(bmoExpressionTimerID);
   setDisplayBmoExpression(bmoExpression);
