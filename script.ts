@@ -1,23 +1,17 @@
 // Types
-type BmoExpression = "sleep" | "smile" | "happy" | "worried" | "neutral";
-
-type Constants = { [key in BmoExpression]: key };
-
-const bmoExpressions: Constants = {
-  sleep: "sleep",
-  smile: "smile",
-  happy: "happy",
-  worried: "worried",
-  neutral: "neutral",
-};
+const enum BmoExpressions {
+  sleep = "sleep",
+  smile = "smile",
+  happy = "happy",
+  worried = "worried",
+  neutral = "neutral",
+}
 
 type ImageUrls = {
-  [key in BmoExpression]: string;
+  [key in BmoExpressions]: string;
 };
 
 type Operator = (a: number, b: number) => number;
-
-type BMOExpression = keyof ImageUrls;
 
 // Global Variables
 const imageUrls: ImageUrls = {
@@ -46,7 +40,7 @@ let operatorFunction: Operator | null = null;
 let equationComplete: boolean = false;
 
 let baseImageUrl: string = imageUrls.sleep;
-let bmoExpressionState: BMOExpression;
+let bmoExpressionState: BmoExpressions;
 let bmoExpressionTimerID: number | undefined = undefined;
 
 // Calculator Functions
@@ -152,7 +146,7 @@ function pressButton(e: Event) {
   if (poweredOn === false) return;
 
   // Change display when interacted with
-  updateBmoExpression(bmoExpressions.smile);
+  updateBmoExpression(BmoExpressions.smile);
 
   // Run function depending on button pressed
   switch (btn) {
@@ -177,7 +171,7 @@ function pressButton(e: Event) {
       break;
     case "equals":
       if (executeEquals()) {
-        updateBmoExpression(bmoExpressions.happy);
+        updateBmoExpression(BmoExpressions.happy);
       }
       break;
     case "back":
@@ -199,7 +193,7 @@ function pressButton(e: Event) {
   }
 
   if (currentValue === divideByZeroErrorString) {
-    updateBmoExpression(bmoExpressions.worried);
+    updateBmoExpression(BmoExpressions.worried);
   }
 
   updateEquation();
@@ -227,25 +221,25 @@ function updateExpression() {
 }
 
 // Expression Functions
-function setDisplayBmoExpression(bmoExpression: BMOExpression) {
+function setDisplayBmoExpression(bmoExpression: BmoExpressions) {
   bmoExpressionState = bmoExpression;
   updateExpression();
 }
 
-function updateBmoExpression(bmoExpression: BMOExpression) {
+function updateBmoExpression(bmoExpression: BmoExpressions) {
   clearTimeout(bmoExpressionTimerID);
   setDisplayBmoExpression(bmoExpression);
 
-  if (bmoExpression === bmoExpressions.happy) {
+  if (bmoExpression === BmoExpressions.happy) {
     bmoExpressionTimerID = setTimeout(
-      () => updateBmoExpression(bmoExpressions.smile),
+      () => updateBmoExpression(BmoExpressions.smile),
       happyTimeMs
     );
   }
 
-  if (bmoExpression === bmoExpressions.smile) {
+  if (bmoExpression === BmoExpressions.smile) {
     bmoExpressionTimerID = setTimeout(
-      () => updateBmoExpression(bmoExpressions.neutral),
+      () => updateBmoExpression(BmoExpressions.neutral),
       smileTimeMs
     );
   }
@@ -256,7 +250,7 @@ function powerOff() {
   poweredOn = false;
   equationElem.style.display = "none";
   outputElem.style.display = "none";
-  updateBmoExpression(bmoExpressions.sleep);
+  updateBmoExpression(BmoExpressions.sleep);
   resetAll();
 }
 
@@ -264,7 +258,7 @@ function powerOn() {
   poweredOn = true;
   equationElem.style.display = "block";
   outputElem.style.display = "block";
-  updateBmoExpression(bmoExpressions.neutral);
+  updateBmoExpression(BmoExpressions.neutral);
   resetAll();
 }
 
