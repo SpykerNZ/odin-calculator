@@ -1,10 +1,18 @@
 // Types
+type BmoExpression = "sleep" | "smile" | "happy" | "worried" | "neutral";
+
+type Constants = { [key in BmoExpression]: key };
+
+const bmoExpressions: Constants = {
+  sleep: "sleep",
+  smile: "smile",
+  happy: "happy",
+  worried: "worried",
+  neutral: "neutral",
+};
+
 type ImageUrls = {
-  sleep: string;
-  smile: string;
-  happy: string;
-  straight: string;
-  worried: string;
+  [key in BmoExpression]: string;
 };
 
 type Operator = (a: number, b: number) => number;
@@ -114,7 +122,7 @@ function pressButton(e: Event) {
   if (poweredOn === false) return;
 
   // Change display when interacted with
-  setSmileTemporary();
+  updateBmoExpression(bmoExpressions.smile);
 
   // Run function depending on button pressed
   switch (btn) {
@@ -139,7 +147,7 @@ function pressButton(e: Event) {
       break;
     case "equals":
       if (executeEquals()) {
-        setHappyTemporary();
+        updateBmoExpression(bmoExpressions.happy);
       }
       break;
     case "back":
@@ -161,7 +169,7 @@ function pressButton(e: Event) {
   }
 
   if (currentValue === divideByZeroErrorString) {
-    setWorriedOverride();
+    updateBmoExpression(bmoExpressions.worried);
   }
 
   updateEquation();
@@ -184,42 +192,47 @@ function updateOutput() {
   outputElem.innerHTML = stringSliced;
 }
 
+function updateExpression() {
+  displayElem.style.backgroundImage = imageUrls[bmoExpressionState];
+}
+
 // Expression Functions
-function setBgDisplay(imageUrl: string) {
-  baseImageUrl = imageUrl;
-  displayElem.style.backgroundImage = baseImageUrl;
+function setDisplayBmoExpression(bmoExpression: BMOExpression) {
+  bmoExpressionState = bmoExpression;
+  updateExpression();
 }
 
-function setSmileTemporary() {
-  displayElem.style.backgroundImage = imageUrls.smile;
+/*
+setExpressionState(state) {
+  clear the timer
+  set image to state
+  if new state is happy {
+    start 1 second timer
+    (transition to smile)
+  } else if new state is smile {
+    start 5 second timer
+    (transition to neutral)
+  }
+};
+*/
 
-  if (smileTimeout != null) clearTimeout(smileTimeout);
+function updateBmoExpression(bmoExpression: BMOExpression) {
+  clearTimeout(bmoExpressionTimerID);
+  setDisplayBmoExpression(bmoExpression);
 
-  smileTimeout = setTimeout(function () {
-    displayElem.style.backgroundImage = baseImageUrl;
-    smileTimeout = null;
-  }, smileTimeMs);
-}
+  if (bmoExpression === bmoExpressions.happy) {
+    bmoExpressionTimerID = setTimeout(
+      () => updateBmoExpression(bmoExpressions.smile),
+      happyTimeMs
+    );
+  }
 
-function setHappyTemporary() {
-  displayElem.style.backgroundImage = imageUrls.happy;
-
-  if (happyTimeout != null) clearTimeout(happyTimeout);
-
-  happyTimeout = setTimeout(function () {
-    if (poweredOn) {
-      displayElem.style.backgroundImage = imageUrls.smile;
-    } else {
-      displayElem.style.backgroundImage = imageUrls.sleep;
-    }
-    happyTimeout = null;
-  }, happyTimeMs);
-}
-
-function setWorriedOverride() {
-  if (smileTimeout != null) clearTimeout(smileTimeout);
-  if (happyTimeout != null) clearTimeout(happyTimeout);
-  displayElem.style.backgroundImage = imageUrls.worried;
+  if (bmoExpression === bmoExpressions.smile) {
+    bmoExpressionTimerID = setTimeout(
+      () => updateBmoExpression(bmoExpressions.neutral),
+      smileTimeMs
+    );
+  }
 }
 
 // Power Functions
@@ -227,7 +240,7 @@ function powerOff() {
   poweredOn = false;
   equationElem.style.display = "none";
   outputElem.style.display = "none";
-  setBgDisplay(imageUrls.sleep);
+  updateBmoExpression(bmoExpressions.sleep);
   resetAll();
 }
 
@@ -235,7 +248,7 @@ function powerOn() {
   poweredOn = true;
   equationElem.style.display = "block";
   outputElem.style.display = "block";
-  setBgDisplay(imageUrls.straight);
+  updateBmoExpression(bmoExpressions.neutral);
   resetAll();
 }
 
@@ -276,7 +289,7 @@ const imageUrls: ImageUrls = {
   sleep: "url(./images/face-sleep.gif)",
   smile: "url(./images/face-smile.png)",
   happy: "url(./images/face-happy.png)",
-  straight: "url(./images/face-straight.png)",
+  neutral: "url(./images/face-neutral.png)",
   worried: "url(./images/face-worried.png)",
 };
 
@@ -299,8 +312,8 @@ let operatorFunction: Operator | null = null;
 let equationComplete: boolean = false;
 
 let baseImageUrl: string = imageUrls.sleep;
-let smileTimeout: number | null = null;
-let happyTimeout: number | null = null;
+let bmoExpressionState: BMOExpression;
+let bmoExpressionTimerID: number | undefined = undefined;
 
 // Power off by default, which updates initial display
 preloadImages();
