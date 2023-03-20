@@ -1,88 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="calculator">
-        <div class="display">
-            <div class="equation"></div>
-            <div class="output"></div>
+      <div class="display">
+        <div class="equation"></div>
+        <div class="output"></div>
+      </div>
+      <div class="upper-row">
+        <div class="digits">
+          <div class="one-to-five">
+            <button data-key="digit" class="digit button">1</button>
+            <button data-key="digit" class="digit button">2</button>
+            <button data-key="digit" class="digit button">3</button>
+            <button data-key="digit" class="digit button">4</button>
+            <button data-key="digit" class="digit button">5</button>
+          </div>
+          <div class="six-to-zero">
+            <button data-key="digit" class="digit button">6</button>
+            <button data-key="digit" class="digit button">7</button>
+            <button data-key="digit" class="digit button">8</button>
+            <button data-key="digit" class="digit button">9</button>
+            <button data-key="digit" class="digit button">0</button>
+          </div>
         </div>
-        <div class="upper-row">
-            <div class="digits">
-                <div class="one-to-five">
-                    <button data-key="digit" class="digit button">1</button>
-                    <button data-key="digit" class="digit button">2</button>
-                    <button data-key="digit" class="digit button">3</button>
-                    <button data-key="digit" class="digit button">4</button>
-                    <button data-key="digit" class="digit button">5</button>        
-                </div>
-                <div class="six-to-zero">
-                    
-                    <button data-key="digit" class="digit button">6</button>
-                    <button data-key="digit" class="digit button">7</button>
-                    <button data-key="digit" class="digit button">8</button>
-                    <button data-key="digit" class="digit button">9</button>
-                    <button data-key="digit" class="digit button">0</button>
-                </div>
+        <img src="./images/dot-btn.svg" data-key="dot" class="control button" />
+      </div>
+      <div class="lower-row">
+        <div class="left">
+          <div class="top">
+            <div class="dpad">
+              <div class="dpad-empty"></div>
+              <img
+                src="./images/plus-btn.svg"
+                data-key="add"
+                class="operator button"
+              />
+              <div class="dpad-empty"></div>
+              <img
+                src="./images/divide-btn.svg"
+                data-key="divide"
+                class="operator button"
+              />
+              <div class="dpad-filled"></div>
+              <img
+                src="./images/minus-btn.svg"
+                data-key="subtract"
+                class="operator button"
+              />
+              <div class="dpad-empty"></div>
+              <img
+                src="./images/times-btn.svg"
+                data-key="multiply"
+                class="operator button"
+              />
+              <div class="dpad-empty"></div>
             </div>
-            <img src="./images/dot-btn.svg" 
-                         data-key="dot" 
-                         class="control button"></img>
+          </div>
+          <div class="bottom">
+            <button data-key="power" class="control button">POWER</button>
+            <button data-key="sleep" class="control button">SLEEP</button>
+          </div>
         </div>
-        <div class="lower-row">
-            <div class="left">
-                <div class="top">
-                    <div class="dpad">
-                        <div class="dpad-empty"></div>
-                        <img src="./images/plus-btn.svg" 
-                             data-key="add"
-                             class="operator button"></img>
-                        <div class="dpad-empty"></div>
-                        <img src="./images/divide-btn.svg" 
-                             data-key="divide"
-                             class="operator button"></img>
-                        <div class="dpad-filled"></div>
-                        <img src="./images/minus-btn.svg" 
-                             data-key="subtract"
-                             class="operator button"></img>
-                        <div class="dpad-empty"></div>
-                        <img src="./images/times-btn.svg" 
-                             data-key="multiply"
-                             class="operator button"></img>
-
-                        <div class="dpad-empty"></div>
-                    </div> 
-                </div>
-                <div class="bottom">
-                    <button data-key="power" class="control button">POWER</button>
-                    <button data-key="sleep" class="control button">SLEEP</button>
-                </div>
-            </div>
-            <div class="right">
-                <div class="top">
-                    <img src="./images/clear-btn.svg" 
-                         data-key="clear" 
-                         class="control button"></img>
-                    <img src="./images/backspace-btn.svg"
-                         data-key="back" 
-                         class="control button"></img>
-                </div>
-                <div class="bottom">
-                    <img src="./images/equals-btn.svg"
-                         width="100px"
-                         height="100px"
-                         data-key="equals" 
-                         class="control button"></img>
-                </div>
-            </div>
+        <div class="right">
+          <div class="top">
+            <img
+              src="./images/clear-btn.svg"
+              data-key="clear"
+              class="control button"
+            />
+            <img
+              src="./images/backspace-btn.svg"
+              data-key="back"
+              class="control button"
+            />
+          </div>
+          <div class="bottom">
+            <img
+              src="./images/equals-btn.svg"
+              width="100px"
+              height="100px"
+              data-key="equals"
+              class="control button"
+            />
+          </div>
         </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
